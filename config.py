@@ -12,8 +12,8 @@ When `scanner.py` looks at a file, it first checks these lists.
 If the file ends with `.jpg` or is named `package-lock.json`, the scanner skips it instantly.
 """
 
-import os
 import re
+import os
 import json
 
 IGNORED_EXTENSIONS = {
@@ -115,8 +115,6 @@ STANDARD_ONLY_EXTENSIONS = {
     '.tar', '.gz', '.tgz', '.bz2', '.tbz2', '.xz', '.txz', # Tarballs
 }
 
-import json
-import os
 
 SECRET_PATTERNS = {}
 

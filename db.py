@@ -111,16 +111,16 @@ def get_analytics_summary():
     }
 
 def record_scan_and_findings(scan_id, mode, target_type, target, repos_scanned, files_scanned, time_taken, findings):
-    conn = get_db()
+    conn = sqlite3.connect(DB_PATH)
     conn.execute('PRAGMA journal_mode=WAL')
     try:
         conn.execute('''
-            INSERT INTO scans (id, mode, target_type, target, repos_scanned, files_scanned, time_taken)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (scan_id, mode, target_type, target, repos_scanned, files_scanned, time_taken))
+            INSERT INTO scans (id, timestamp, mode, target_type, target, repos_scanned, files_scanned, time_taken)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (scan_id, datetime.datetime.utcnow(), mode, target_type, target, repos_scanned, files_scanned, time_taken))
         
         conn.executemany('''
-            INSERT INTO findings (scan_id, repository, filepath, line_number, secret_type, preview, severity, is_active, metadata)
+            INSERT INTO findings (scan_id, repository, file, line, secret_type, token_preview, severity, is_active, metadata)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', [
             (

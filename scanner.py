@@ -8,7 +8,6 @@ import subprocess
 import zipfile
 import tarfile
 import tempfile
-import time
 try:
     import py7zr
     HAS_PY7ZR = True

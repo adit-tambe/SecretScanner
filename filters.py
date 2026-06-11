@@ -5,7 +5,7 @@ from collections import Counter
 
 TRIGRAM_LOG_LIKELIHOOD = {
     'the': 3.5, 'and': 3.2, 'ing': 3.4, 'ion': 3.1, 'ent': 3.0, 'ati': 2.9, 'for': 2.8,
-    'ter': 2.7, 'est': 2.6, 'ers': 2.5, 'tha': 2.4, 'res': 2.6, 'thi': 2.5, 'und': 2.3,
+    'ter': 2.7, 'est': 2.6, 'ers': 2.5, 'tha': 2.4, 'thi': 2.5, 'und': 2.3,
     'get': 3.3, 'set': 3.3, 'cre': 3.1, 'ate': 3.2, 'upd': 3.0, 'dat': 3.1, 'str': 2.9,
     'int': 2.8, 'val': 2.9, 'nam': 3.2, 'url': 3.0, 'uid': 2.7, 'req': 2.9, 'res': 2.8,
     'api': 3.1, 'key': 3.0, 'tok': 2.9, 'aut': 3.0, 'use': 3.1, 'pwd': 2.5, 'env': 2.8,

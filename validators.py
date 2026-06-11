@@ -1,7 +1,6 @@
 import urllib.request
 import json
-import logging
-from urllib.error import URLError, HTTPError
+from urllib.error import HTTPError
 
 # Timeout for all external validation requests to ensure performance constraints
 VALIDATION_TIMEOUT = 3.0
@@ -22,7 +21,7 @@ def validate_github_token(token):
         if e.code == 401:
             return {"status": "inactive", "metadata": "Token is revoked or invalid"}
         return {"status": "unknown", "metadata": f"HTTP {e.code}"}
-    except Exception as e:
+    except Exception:
         return {"status": "unknown", "metadata": "Connection timeout"}
     
     return {"status": "unknown", "metadata": ""}
@@ -48,7 +47,7 @@ def validate_stripe_token(token):
             mode = "Test" if "test" in token else "Live"
             return {"status": "active", "metadata": f"Mode: {mode}"}
         return {"status": "unknown", "metadata": f"HTTP {e.code}"}
-    except Exception as e:
+    except Exception:
         return {"status": "unknown", "metadata": "Connection timeout"}
     
     return {"status": "unknown", "metadata": ""}
@@ -66,7 +65,7 @@ def validate_openai_token(token):
         if e.code == 401:
             return {"status": "inactive", "metadata": "Invalid or revoked API Key"}
         return {"status": "unknown", "metadata": f"HTTP {e.code}"}
-    except Exception as e:
+    except Exception:
         return {"status": "unknown", "metadata": "Connection timeout"}
     
     return {"status": "unknown", "metadata": ""}
@@ -86,7 +85,7 @@ def validate_slack_token(token):
                     return {"status": "inactive", "metadata": data.get("error", "invalid_auth")}
     except HTTPError as e:
         return {"status": "unknown", "metadata": f"HTTP {e.code}"}
-    except Exception as e:
+    except Exception:
         return {"status": "unknown", "metadata": "Connection timeout"}
     
     return {"status": "unknown", "metadata": ""}

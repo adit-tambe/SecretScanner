@@ -1,4 +1,3 @@
-import sys
 import traceback
 import threading
 import uuid
@@ -680,12 +679,14 @@ def run_background_scan(task_id, data):
 
             formatted_findings = list(deduped.values())
 
-            # Async validation checks — ONLY for token types with known API endpoints.
-            # This prevents the validator from blocking on thousands of un-validatable tokens.
-            VALIDATABLE_TYPES = GLOBAL_VALIDATABLE_TYPES
-
-            validatable = [f for f in formatted_findings if f["type"] in VALIDATABLE_TYPES]
-            non_validatable = [f for f in formatted_findings if f["type"] not in VALIDATABLE_TYPES]
+            validatable = []
+            non_validatable = []
+            for f in formatted_findings:
+                tl = f["type"].lower()
+                if ("github" in tl and ("token" in tl or "pat" in tl)) or "stripe" in tl or "openai" in tl or "slack" in tl or "google" in tl:
+                    validatable.append(f)
+                else:
+                    non_validatable.append(f)
 
             # Mark non-validatable tokens instantly
             for f in non_validatable:
