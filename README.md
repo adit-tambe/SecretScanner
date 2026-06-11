@@ -1,4 +1,4 @@
-# SecretScanner v1.0 🕵️‍♂️
+# SecretScanner v1.0
 
 **An Advanced, Highly-Concurrent, Mathematically-Rigorous Secret Detection Engine**
 
@@ -8,7 +8,7 @@ This document is a complete technical walkthrough of the architecture, engineeri
 
 ---
 
-## 📖 Architecture & Engineering Walkthrough
+## Architecture & Engineering Walkthrough
 1. [The Concurrency & State Synchronizer](#1-the-concurrency--state-synchronizer)
 2. [I/O Guts & Memory Management](#2-io-guts--memory-management)
 3. [The Detection Pipeline (The Gauntlet)](#3-the-detection-pipeline-the-gauntlet)
