@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>SecretScanner — Credential Exposure Engine</title>
+  <meta name="description" content="Enterprise-grade secret detection. Scan GitHub repos, user profiles, and live websites for exposed API keys and credentials before attackers do." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.css" />
+
+  <style>
+    /* ─── CSS VARIABLES ─────────────────────────────────────── */
+    :root {
+      --bg:       #040506;
+      --bg2:      #080c10;
+      --surface:  rgba(10, 16, 22, 0.85);
+      --border:   rgba(0, 255, 180, 0.08);
+      --accent:   #00ffb3;
+      --accent2:  #00d4ff;
+      --danger:   #ff3c6e;
+      --warn:     #ffad33;
+      --text:     #e8f0fe;
+      --muted:    rgba(232,240,254,0.68);
+      --nav-height: 78px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    ::selection { background: var(--accent); color: #000; }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+    /* custom cursor */
+    #cursor-dot {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease;
+      box-shadow: 0 0 12px var(--accent);
+    }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 9998;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(0,255,179,0.5);
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: transform 0.18s cubic-bezier(0.23,1,0.32,1),
+                  width 0.3s, height 0.3s;
+    }
+    body.cursor-hover #cursor-dot { width: 6px; height: 6px; background: #fff; }
+    body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: var(--accent); opacity: 0.7; }
+
+    /* noise overlay */
+    #noise {
+      position: fixed; inset: 0; z-index: 9989;
+      opacity: 0.025;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    /* ===== NAVBAR ===== */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      background: rgba(4,5,6,0.65);
+      border-bottom: 1px solid rgba(0,255,179,0.12);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.5rem 1.3rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0,255,179,0.3);
+    }
+
+    /* ===== HERO + MARQUEE: first viewport includes marquee ===== */
+    #hero {
+      position: relative;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4rem;
+      padding-top: var(--nav-height);
+      padding-bottom: 2rem;
+      overflow: visible;
+    }
+    .marquee-strip {
+      overflow: hidden;
+      white-space: nowrap;
+      background: var(--accent);
+      padding: 0.7rem 0;
+      border-top: 1px solid rgba(0,255,179,0.4);
+      border-bottom: 1px solid rgba(0,255,179,0.4);
+      position: relative;
+      z-index: 5;
+    }
+    @media (max-height: 700px) {
+      #hero { min-height: calc(100vh - 70px); }
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      filter: brightness(0.94);
+    }
+    .hero-container {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .hero-left { text-align: left; }
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .hero-title-line1 { display: block; color: var(--text); }
+    .hero-title-line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-right {
+      text-align: left;
+      background: rgba(4,5,6,0.3);
+      backdrop-filter: blur(4px);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 2px solid rgba(0,255,179,0.2);
+    }
+    .hero-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      text-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    .glitch-target {
+      color: var(--accent);
+      font-weight: 500;
+      display: inline-block;
+    }
+    .hero-cta-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+      padding: 0.9rem 2.2rem;
+      background: var(--accent);
+      color: #000;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      transition: box-shadow 0.3s ease, transform 0.2s;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 40px rgba(0,255,179,0.5);
+      transform: translateY(-2px);
+    }
+    .btn-ghost {
+      padding: 0.9rem 1.8rem;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 2px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,0,0,0.7); }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 2.2s forwards;
+      z-index: 3;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 35px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+    @keyframes scrollPulse {
+      0%,100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.4; transform: scaleY(0.7); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 900px) {
+      #hero { padding: 0 1.5rem; min-height: calc(100vh - 80px); }
+      .hero-container { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
+      .hero-left, .hero-right { text-align: center; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-cta-row { justify-content: center; }
+    }
+
+    /* ASCII grid */
+    .ascii-grid {
+      position: absolute; inset: 0; z-index: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; line-height: 1.5;
+      color: rgba(0,255,179,0.03);
+      overflow: hidden; pointer-events: none;
+      user-select: none;
+    }
+
+    /* Marquee inner */
+    .marquee-inner { display: inline-flex; gap: 0; animation: marqueeScroll 22s linear infinite; }
+    .marquee-item { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #000; padding: 0 2rem; }
+    .marquee-sep { color: rgba(0,0,0,0.4); padding: 0 0.5rem; }
+    @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ===== STATS ===== */
+    #stats {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 2rem;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .stats-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .stats-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .stat-card {
+      background: var(--bg2);
+      padding: 2.8rem 1.8rem;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transform: scaleX(0);
+      transition: transform 0.6s ease;
+    }
+    .stat-card.revealed::before { transform: scaleX(1); }
+    .stat-number {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.2rem;
+      white-space: nowrap;
+      flex-wrap: nowrap;
+    }
+    .stat-unit {
+      font-size: 0.4em;
+      vertical-align: baseline;
+      margin-left: 0.2rem;
+      -webkit-text-fill-color: var(--accent2);
+      background: none;
+      white-space: nowrap;
+    }
+    .stat-desc {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+      margin-top: 1rem;
+      max-width: 240px;
+    }
+    .stat-icon {
+      position: absolute;
+      bottom: 1.2rem;
+      right: 1.2rem;
+      font-size: 1.8rem;
+      opacity: 0.08;
+    }
+    @media (max-width: 950px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 680px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-number { font-size: 2.5rem; white-space: nowrap; }
+      .stat-card { padding: 1.8rem; }
+    }
+
+    /* ===== SCANNER CARD ===== */
+    #scanner {
+      padding: 6rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      opacity: 0;
+    }
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    .scanner-card {
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .card-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem; 
+    }
+    .inputs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 640px) {
+      .inputs-row { grid-template-columns: 1fr; gap: 1rem; }
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .input-field {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      width: 100%;
+      border-radius: 2px;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+    label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .scan-btn-wrap {
+      margin-top: 0.5rem;
+    }
+    #scanBtn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: #000;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: none;
+      transition: box-shadow 0.2s, transform 0.1s;
+    }
+    #scanBtn:hover {
+      box-shadow: 0 0 20px rgba(0,255,179,0.4);
+      transform: translateY(-1px);
+    }
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+<div id="cursor-dot"></div><div id="cursor-ring"></div><div id="noise"></div>
+
+<nav id="navbar">
+  <div class="nav-logo"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1L1 5v8l8 4 8-4V5L9 1z" stroke="currentColor" stroke-width="1.5"/><path d="M9 5v4M9 9l3 2" stroke="currentColor" stroke-width="1.2"/></svg><span>SecretScanner</span></div>
+  <div class="nav-links">
+    <a href="#stats">Threat Intel</a>
+    <a href="#scanner">Scanner</a>
+    <a href="#footer">About</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('scanner').scrollIntoView({behavior:'smooth'})">Run Scan</button>
+</nav>
+
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="ascii-grid" id="asciiGrid" aria-hidden="true"></div>
+  <div class="hero-container">
+    <div class="hero-left">
+      <div class="hero-eyebrow" id="heroEyebrow">Credential Exposure Engine</div>
+      <h1 class="hero-title" id="heroTitle">
+        <span class="hero-title-line1">Stop</span>
+        <span class="hero-title-line2">Leaking Secrets.</span>
+      </h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-sub" id="heroSub">
+        Real-time detection of exposed API keys, tokens &amp; database credentials across
+        <span class="glitch-target">GitHub repos</span>,
+        user profiles &amp; live websites — before they become breaches.
+      </p>
+      <div class="hero-cta-row" id="heroCta">
+        <button class="btn-primary" onclick="document.getElementById('scanner').scrollIntoView({behavior:'smooth'})">Launch Scanner ↓</button>
+        <a href="#stats" class="btn-ghost"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v4M7 9.5v.5" stroke="currentColor" stroke-width="1.4"/></svg>Why it matters</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint"><div class="scroll-line"></div><div class="scroll-label" style="font-family:monospace; font-size:0.6rem;">SCROLL</div></div>
+</section>
+
+<div class="marquee-strip"><div class="marquee-inner" id="marqueeInner"></div></div>
+
+<section id="stats">
+  <div class="stats-container" style="position: relative;">
+    <div class="stats-label" id="statsLabel">// Threat Intelligence — 2024 Data</div>
+    <div class="stats-grid">
+      <div class="stat-card" id="stat0"><div class="stat-number"><span class="stat-val" data-target="4.5">0</span><span class="stat-unit">M</span></div><div class="stat-desc">Average cost of a data breach involving leaked credentials</div><div class="stat-icon">💸</div></div>
+      <div class="stat-card" id="stat1"><div class="stat-number"><span class="stat-val" data-target="80">0</span><span class="stat-unit">%</span></div><div class="stat-desc">Of breaches involve compromised or weak credentials</div><div class="stat-icon">🔓</div></div>
+      <div class="stat-card" id="stat2"><div class="stat-number"><span class="stat-val" data-target="6">0</span><span class="stat-unit">min</span></div><div class="stat-desc">Median time attackers exploit a leaked key in the wild</div><div class="stat-icon">⚡</div></div>
+      <div class="stat-card" id="stat3"><div class="stat-number"><span class="stat-val" data-target="12.8">0</span><span class="stat-unit">M</span></div><div class="stat-desc">Secrets accidentally committed to public repos every year</div><div class="stat-icon">📂</div></div>
+      <div class="stat-card" id="stat4"><div class="stat-number"><span class="stat-val" data-target="208">0</span><span class="stat-unit">d</span></div><div class="stat-desc">Average time to identify a credential breach</div><div class="stat-icon">⏱</div></div>
+      <div class="stat-card" id="stat5"><div class="stat-number"><span class="stat-val" data-target="3">0</span><span class="stat-unit">x</span></div><div class="stat-desc">Year-over-Year increase in secret leaks</div><div class="stat-icon">📈</div></div>
+    </div>
+    <div style="text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; color: rgba(232,240,254,0.3); margin-top: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; max-width: 1100px; margin-left: auto; margin-right: auto;">
+      Sources: IBM Cost of a Data Breach 2023 | GitGuardian State of Secrets Sprawl 2024
+    </div>
+  </div>
+</section>
+
+<section id="scanner">
+  <div class="section-eyebrow" id="scannerEyebrow">The Tool</div>
+  <h2 class="section-title" id="scannerTitle">Scan. Detect.<br><em>Remediate.</em></h2>
+  <div class="scanner-card" id="scannerCard">
+    <div class="card-header" style="padding:1rem 2rem; border-bottom:1px solid var(--border); display:flex; gap:0.5rem; align-items:center;">
+      <div style="background:#ff5f57; width:10px; height:10px; border-radius:50%;"></div>
+      <div style="background:#ffbd2e; width:10px; height:10px; border-radius:50%;"></div>
+      <div style="background:#28ca41; width:10px; height:10px; border-radius:50%;"></div>
+      <span style="font-family:monospace; font-size:0.7rem; color:var(--muted);">secretscanner — v2.0.0</span>
+    </div>
+    <div class="card-body">
+      <div class="inputs-row">
+        <div class="input-group">
+          <label>⌖ Target</label>
+          <input id="targetInput" class="input-field" type="text" placeholder="GitHub username or organization (e.g., octocat or google)" autocomplete="off"/>
+        </div>
+        <div class="input-group">
+          <label>⊛ Scan Mode</label>
+          <select id="typeSelect" class="input-field">
+            <option value="github">GitHub Repository</option>
+            <option value="github-user" selected>GitHub User / Org</option>
+            <option value="website">Website Crawler</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>◈ GitHub Token (optional)</label>
+        <input id="tokenInput" class="input-field" type="password" placeholder="ghp_xxxxxxxxxxxx"/>
+      </div>
+      <div class="scan-btn-wrap">
+        <button id="scanBtn">Initiate Scan</button>
+      </div>
+      <div id="loadingArea" style="display:none;"><div style="padding:1rem; text-align:center;">Scanning...</div></div>
+      <div id="resultsArea"></div>
+    </div>
+  </div>
+</section>
+
+<footer id="footer"><div style="max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;"><div>© 2026 SecretScanner — Ethical security research only</div><div><a href="#" style="color:var(--muted);">GitHub</a> | <a href="#" style="color:var(--muted);">Docs</a></div></div></footer>
+<div id="toastContainer" style="position:fixed; bottom:1rem; right:1rem; z-index:9999;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script>
+  // Lenis smooth scroll
+  const lenis = new Lenis({ duration: 1.2, smooth: true });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(time => lenis.raf(time * 1000));
+
+  // cursor
+  const dot = document.getElementById('cursor-dot'), ring = document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+  function animateRing() { rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animateRing); }
+  animateRing();
+  document.querySelectorAll('a,button').forEach(el => { el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover')); el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover')); });
+
+  // Hero canvas - less dense, softer (280 particles)
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    const hero = document.getElementById('hero');
+    let ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    let mouseX = 0, mouseY = 0;
+
+    function resize() {
+      const rect = hero.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas.width = W; canvas.height = H;
+      canvas.style.width = `${W}px`; canvas.style.height = `${H}px`;
+      particles = [];
+      for (let i = 0; i < 280; i++) {
+        particles.push({
+          x: Math.random() * W, y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 1.8 + 0.5,
+          life: Math.random() * 280 + 140, age: 0,
+        });
+      }
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    hero.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    });
+
+    function draw() {
+      if (!ctx || W === 0 || H === 0) return;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = 'rgba(0,0,0,0.08)';
+      ctx.fillRect(0,0,W,H);
+      const grd = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, W*0.7);
+      grd.addColorStop(0, 'rgba(0,255,179,0.04)');
+      grd.addColorStop(0.7, 'rgba(0,212,255,0.01)');
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+      
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i+1; j < particles.length; j++) {
+          const p = particles[i], q = particles[j];
+          const dx = p.x - q.x, dy = p.y - q.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 120) {
+            const alpha = (1 - dist / 120) * 0.22;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = `rgba(0,255,179,${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+      for (let idx = 0; idx < particles.length; idx++) {
+        const p = particles[idx];
+        const dxm = p.x - mouseX, dym = p.y - mouseY;
+        const dm = Math.hypot(dxm, dym);
+        if (dm < 110) {
+          p.vx += (dxm / dm) * 0.1;
+          p.vy += (dym / dm) * 0.1;
+        }
+        p.vx *= 0.99; p.vy *= 0.99;
+        p.x += p.vx; p.y += p.vy; p.age++;
+        if (p.x < 0 || p.x > W) p.vx *= -0.98;
+        if (p.y < 0 || p.y > H) p.vy *= -0.98;
+        const life = 1 - p.age / p.life;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(0,255,179,${life * 0.6})`;
+        ctx.fill();
+        if (p.age >= p.life) {
+          particles[idx] = { x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.35, vy: (Math.random()-0.5)*0.35, r: Math.random()*1.6+0.5, life: Math.random()*280+140, age:0 };
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  // ascii grid
+  function buildAsciiGrid() {
+    const chars='01SECRET_SCAN█▓▒░◉◈⊛⌖▸◆';
+    const grid=document.getElementById('asciiGrid');
+    const cols=Math.ceil(window.innerWidth/12);
+    const rows=Math.ceil(window.innerHeight/20)+2;
+    let html='';
+    for(let r=0;r<rows;r++){ for(let c=0;c<cols;c++){ html+=chars[Math.floor(Math.random()*chars.length)]; if(c<cols-1) html+=' '; } html+='\n'; }
+    grid.textContent=html;
+  }
+  buildAsciiGrid(); window.addEventListener('resize',buildAsciiGrid);
+
+  // marquee
+  const marqueeList = ['OpenAI Keys','Anthropic Tokens','AWS Secrets','GitHub PATs','Stripe Live','Database URIs','JWT Tokens','PEM Private Keys','Slack Tokens','Discord Bots','DeepSeek','Supabase'];
+  let marqueeHtml = '';
+  for(let r=0;r<3;r++) marqueeList.forEach(i=>{ marqueeHtml+=`<span class="marquee-item">${i}</span><span class="marquee-sep">◆</span>`; });
+  document.getElementById('marqueeInner').innerHTML = marqueeHtml;
+
+  // GSAP - Updated array [0,1,2,3,4,5] to include the new stat cards
+  gsap.registerPlugin(ScrollTrigger);
+  const heroTl = gsap.timeline({delay:0.2});
+  heroTl.to('#heroEyebrow', {opacity:1,y:0,duration:0.7}).to('#heroTitle',{opacity:1,y:0,duration:0.9},'-=0.4').to('#heroSub',{opacity:1,y:0,duration:0.8},'-=0.5').to('#heroCta',{opacity:1,y:0,duration:0.7},'-=0.3');
+  gsap.to('#statsLabel',{opacity:1,y:0,scrollTrigger:{trigger:'#stats',start:'top 80%'}});
+  [0,1,2,3,4,5].forEach(i=>{ gsap.to(`#stat${i}`,{opacity:1,y:0,duration:0.8,delay:i*0.1,scrollTrigger:{trigger:'#stats',start:'top 70%'},onComplete:()=>document.getElementById(`stat${i}`).classList.add('revealed')}); });
+  function animateCounters(){ document.querySelectorAll('.stat-val').forEach(el=>{ let target=parseFloat(el.dataset.target); let decimals=(target%1!==0)?1:0; gsap.fromTo(el,{textContent:0},{textContent:target,duration:1.6,snap:{textContent: decimals?0.1:1},onUpdate:function(){ el.textContent=parseFloat(el.textContent).toFixed(decimals);}}); }); }
+  ScrollTrigger.create({trigger:'#stats',start:'top 70%',once:true,onEnter:animateCounters});
+  gsap.to('#scannerEyebrow',{opacity:1,y:0,scrollTrigger:{trigger:'#scanner',start:'top 80%'}});
+  gsap.to('#scannerTitle',{opacity:1,y:0,scrollTrigger:{trigger:'#scanner',start:'top 75%'}});
+  gsap.to('#scannerCard',{opacity:1,y:0,scrollTrigger:{trigger:'#scanner',start:'top 70%'}});
+  gsap.to('.hero-title',{yPercent:12,scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
+
+  // glitch
+  const glitchKeyframes = `
+    @keyframes gentleGlitch {
+      0% { transform: translate(0); text-shadow: 0 0 0 var(--accent); }
+      10% { transform: translate(-1px, 1px); text-shadow: -1px 0 var(--accent2); }
+      20% { transform: translate(1px, -1px); text-shadow: 1px 0 var(--accent); }
+      30% { transform: translate(-1px, 0); text-shadow: -1px 0 var(--accent2); }
+      40% { transform: translate(1px, 1px); text-shadow: 1px 0 var(--accent); }
+      50% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+      60%,100% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+    }
+  `;
+  const styleSheet = document.createElement("style");
+  styleSheet.textContent = glitchKeyframes;
+  document.head.appendChild(styleSheet);
+  const glitchTargets = document.querySelectorAll('.glitch-target');
+  function applyGlitch() {
+    glitchTargets.forEach(el => {
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = 'gentleGlitch 0.4s ease-in-out forwards';
+    });
+  }
+  setInterval(applyGlitch, 7000);
+  setTimeout(applyGlitch, 800);
+
+  // dynamic placeholder & scanner stub
+  const typeSelect = document.getElementById('typeSelect');
+  const targetInput = document.getElementById('targetInput');
+  function updatePlaceholder() {
+    const mode = typeSelect.value;
+    if (mode === 'github') {
+      targetInput.placeholder = 'https://github.com/owner/repo  or  owner/repo';
+    } else if (mode === 'github-user') {
+      targetInput.placeholder = 'GitHub username or organization (e.g., octocat or google)';
+    } else {
+      targetInput.placeholder = 'https://example.com (will crawl this domain)';
+    }
+  }
+  typeSelect.addEventListener('change', updatePlaceholder);
+  updatePlaceholder();
+
+  const scanBtn=document.getElementById('scanBtn'), loadingArea=document.getElementById('loadingArea'), resultsArea=document.getElementById('resultsArea');
+  function showToast(msg){ const c=document.getElementById('toastContainer'); const t=document.createElement('div'); t.style.cssText='font-family:monospace; background:#080c10; border:1px solid var(--border); padding:0.5rem 1rem; border-radius:2px; margin-top:0.5rem;'; t.innerHTML=msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); }
+  scanBtn.onclick=()=>{ if(!targetInput.value.trim()){ showToast('Enter a target'); return; } loadingArea.style.display='block'; resultsArea.innerHTML=''; setTimeout(()=>{ loadingArea.style.display='none'; resultsArea.innerHTML=`<div style="padding:2rem; text-align:center; border:1px solid rgba(0,255,179,0.2);">✅ Demo: No exposed secrets found (simulated)</div>`; showToast('Scan complete'); },1800); };
+</script>
+</body>
+</html>

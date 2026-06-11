@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased bg-transparent">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecretScanner v1.0 | Secret Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lenis@1.1.5/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <!-- Three.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/modifiers/SimplifyModifier.js"></script>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #ff00f0;
+            --bg-dark: #030305;
+        }
+
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background-color: transparent;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        h1, h2, h3, h4, h5, h6, .clash {
+            font-family: 'Clash Display', sans-serif;
+        }
+
+        /* --- Fix for browser autofill turning inputs white --- */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px rgba(0,0,0,0.6) inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            transform: translate(-1000px, -1000px); /* start offscreen */
+            mix-blend-mode: screen;
+        }
+
+        .cursor-halo {
+            position: fixed;
+            width: 150px; height: 150px;
+            margin-left: -75px; margin-top: -75px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,243,255,0.4) 0%, rgba(0,243,255,0) 60%);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 1;
+        }
+
+        .cursor-halo-trail {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            background: radial-gradient(circle, rgba(0,243,255,0.2) 0%, rgba(0,243,255,0) 60%);
+        }
+        #trail-1 { width: 120px; height: 120px; margin-left: -60px; margin-top: -60px; opacity: 0.8; }
+        #trail-2 { width: 90px; height: 90px; margin-left: -45px; margin-top: -45px; opacity: 0.6; }
+        #trail-3 { width: 60px; height: 60px; margin-left: -30px; margin-top: -30px; opacity: 0.4; }
+        #trail-4 { width: 40px; height: 40px; margin-left: -20px; margin-top: -20px; opacity: 0.2; }
+        #trail-5 { width: 20px; height: 20px; margin-left: -10px; margin-top: -10px; opacity: 0.1; }
+
+        .leak-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 1;
+            white-space: nowrap;
+            transform: translate(-50%, -50%);
+            font-family: 'Fira Code', monospace;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Subtle Glitch effect */
+        .glitch { position: relative; display: block; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: transparent; pointer-events: none; opacity: 0; 
+        }
+        .glitch::before {
+            text-shadow: -2px 0 var(--neon-cyan);
+            animation: glitch-anim-1 6s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            text-shadow: 2px 0 var(--neon-purple);
+            animation: glitch-anim-2 8s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0%, 80% { clip-path: inset(0 0 0 0); transform: translate(0); opacity: 0; }
+            82% { clip-path: inset(10% 0 60% 0); transform: translate(-2px, 0); opacity: 0.8; }
+            85% { clip-path: inset(80% 0 5% 0); transform: translate(1px, -1px); opacity: 0.8; }
+            88% { clip-path: inset(30% 0 20% 0); transform: translate(-1px, 1px); opacity: 0.8; }
+            91% { clip-path: inset(90% 0 2% 0); transform: translate(2px, 0); opacity: 0.8; }
+            94% { clip-path: inset(15% 0 70% 0); transform: translate(-1px, 0); opacity: 0.8; }
+            97% { clip-path: inset(45% 0 10% 0); transform: translate(1px, 1px); opacity: 0.8; }
+            100% { clip-path: inset(0 0 0 0); transform: translate(0); opacity: 0; }
+        }
+        @keyframes glitch-anim-2 {
+            0%, 75% { clip-path: inset(0 0 0 0); transform: translate(0); opacity: 0; }
+            78% { clip-path: inset(70% 0 10% 0); transform: translate(2px, 0); opacity: 0.8; }
+            81% { clip-path: inset(10% 0 80% 0); transform: translate(-1px, 1px); opacity: 0.8; }
+            84% { clip-path: inset(50% 0 30% 0); transform: translate(1px, -1px); opacity: 0.8; }
+            87% { clip-path: inset(5% 0 90% 0); transform: translate(-2px, 0); opacity: 0.8; }
+            90% { clip-path: inset(85% 0 5% 0); transform: translate(1px, 1px); opacity: 0.8; }
+            93% { clip-path: inset(30% 0 50% 0); transform: translate(-1px, -1px); opacity: 0.8; }
+            96% { clip-path: inset(15% 0 75% 0); transform: translate(2px, -2px); opacity: 0.8; }
+            100% { clip-path: inset(0 0 0 0); transform: translate(0); opacity: 0; }
+        }
+
+        /* Neon Bricks Fixed Background */
+        #bricks-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; overflow: hidden; background-color: #030305; pointer-events: none;
+        }
+
+        .brick {
+            position: absolute; background: transparent; border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 0px; font-family: 'Fira Code', monospace; font-size: 11px; color: rgba(255, 255, 255, 0.28);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            opacity: 0.7; filter: blur(1.5px); transform-origin: center center;
+            will-change: transform, opacity, box-shadow, filter;
+        }
+
+        .brick::before {
+            content: ''; position: absolute; inset: 0; z-index: 0;
+            background: rgba(28, 28, 38, 0.65);
+            backdrop-filter: blur(var(--brick-blur, 0px)); -webkit-backdrop-filter: blur(var(--brick-blur, 0px));
+        }
+
+        .brick span { position: relative; z-index: 1; }
+
+        /* Standard Haze Overlay for Sections */
+        .black-haze { position: relative; }
+        .black-haze::before {
+            content: ''; position: absolute; inset: -8% -10%;
+            background: radial-gradient(circle at center, rgba(3, 3, 5, 0.7) 0%, rgba(3, 3, 5, 0.4) 50%, transparent 90%);
+            z-index: -1; pointer-events: none; filter: blur(40px);
+        }
+
+        .hero-haze { position: relative; }
+        .hero-haze::before {
+            content: ''; position: absolute; inset: -5% -10%;
+            background: radial-gradient(circle at center, rgba(3, 3, 5, 0.25) 0%, transparent 45%);
+            z-index: -1; pointer-events: none; filter: blur(35px);
+        }
+
+        .glass-panel {
+            background: rgba(10, 10, 15, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Loader */
+        .scanner-loader {
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            position: absolute; top: 0; left: 0; animation: scan 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        .hover-glow:focus, .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); border-color: var(--neon-cyan); outline: none;
+        }
+
+        .secret-card { transition: all 0.3s ease; }
+        .secret-card:hover {
+            transform: translateY(-5px); border-color: rgba(255, 0, 240, 0.5); box-shadow: 0 10px 30px rgba(255, 0, 240, 0.1);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+
+        select {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-repeat: no-repeat; background-position-x: 95%; background-position-y: 50%;
+        }
+
+        #vuln-pill {
+            transition: backdrop-filter 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-[#00f3ff] selection:text-black relative">
+
+    <div class="cursor-halo-trail" id="trail-5"></div>
+    <div class="cursor-halo-trail" id="trail-4"></div>
+    <div class="cursor-halo-trail" id="trail-3"></div>
+    <div class="cursor-halo-trail" id="trail-2"></div>
+    <div class="cursor-halo-trail" id="trail-1"></div>
+    <div class="cursor-halo" id="cursor-halo"></div>
+    <canvas id="webgl-canvas" class="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"></canvas>
+    <div id="ascii-bg" class="fixed inset-0 z-[1] pointer-events-none opacity-[0.03] overflow-hidden font-mono text-[10px] md:text-xs text-[#00f3ff] whitespace-pre select-none flex items-center justify-center leading-tight tracking-widest"></div>
+
+    <nav class="fixed top-0 left-0 w-full z-50 py-6 px-6 md:px-12 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/5 transition-all duration-300" id="navbar">
+        <a href="#hero" class="clash font-black text-2xl tracking-tight text-white nav-link">SECRET<span class="text-[#00f3ff]">SCANNER</span></a>
+        <div class="hidden md:flex gap-8 items-center">
+            <a href="#about" class="text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-[#00f3ff] transition-colors nav-link">About</a>
+            <a href="#analytics" class="text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-[#00f3ff] transition-colors nav-link">Analytics</a>
+            <a href="#scan-modes" class="text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-[#00f3ff] transition-colors nav-link">Scan Modes</a>
+            <a href="#scanner-app" class="text-xs uppercase tracking-widest font-bold text-[#00f3ff] border border-[#00f3ff]/50 px-5 py-2.5 rounded-full hover:bg-[#00f3ff] hover:text-black transition-all nav-link hover:shadow-[0_0_15px_rgba(0,243,255,0.4)]">Launch App</a>
+        </div>
+    </nav>
+
+    <main id="smooth-wrapper" class="relative z-10">
+        <div id="smooth-content">
+
+            <section id="hero" class="relative min-h-screen flex items-center pt-32 pb-20">
+                <div class="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pointer-events-none">
+                    <div class="lg:col-span-5 text-left pointer-events-auto">
+                        <div id="vuln-pill" class="relative inline-block mb-4 px-4 py-1 rounded-full border border-[rgba(0,243,255,0.3)] bg-[rgba(0,243,255,0.05)] text-[#00f3ff] text-sm tracking-widest uppercase hero-elem z-20">
+                            Vulnerability Intelligence
+                        </div>
+                        
+                        <h1 id="hero-title" class="text-7xl md:text-9xl font-black leading-none mb-4 hero-elem pointer-events-auto group">
+                            <div>
+                                <span id="glitch-secret" class="tracking-tight text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] inline-block whitespace-nowrap">
+                                    <span>S</span><span>E</span><span>C</span><span>R</span><span>E</span><span>T</span>
+                                </span>
+                            </div>
+                            <div>
+                                <span id="glitch-scanner" class="tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] inline-block whitespace-nowrap" style="padding-right: 0.15em; margin-right: -0.15em;">
+                                    <span>S</span><span>C</span><span>A</span><span>N</span><span>N</span><span>E</span><span>R</span>
+                                </span>
+                            </div>
+                        </h1>
+                        
+                        <div class="relative max-w-xl mb-12 hero-elem">
+                            <p class="text-xl md:text-2xl text-gray-400 font-light glitch w-full" data-text="Detect exposed API keys and database credentials before the breach.">
+                                Detect exposed API keys and database credentials before the breach.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Empty right side for 3D Lock negative space -->
+                    <div class="hidden lg:block lg:col-span-7 h-full w-full"></div>
+                </div>
+            </section>
+
+            <section id="about" class="py-32 relative z-10 min-h-screen flex flex-col justify-center">
+                <div class="container mx-auto px-6 text-center max-w-4xl black-haze">
+                    <h2 class="clash text-4xl md:text-5xl font-bold mb-8 uppercase tracking-wider">The <span class="text-[#00f3ff]">Invisible</span> Perimeter</h2>
+                    <p class="text-gray-400 text-lg md:text-2xl leading-relaxed font-light mb-12">
+                        Your source code is a goldmine for attackers. Hardcoded secrets, forgotten tokens, and unencrypted database URIs are actively scraped by automated bots seconds after they are pushed. SecretScanner employs deep entropy analysis to identify high-risk credentials across any target surface.
+                    </p>
+                    <div class="h-1 w-32 bg-gradient-to-r from-transparent via-[#00f3ff] to-transparent mx-auto"></div>
+                </div>
+            </section>
+
+            <section id="analytics" class="py-32 relative z-10 min-h-screen flex flex-col justify-center">
+                <div class="container mx-auto px-6">
+                    <div class="mb-16 text-center md:text-left">
+                        <div class="inline-block black-haze relative">
+                            <h2 class="clash text-5xl md:text-6xl font-bold mb-4 uppercase">The Threat <span class="text-[#ff00f0]">Landscape</span></h2>
+                            <p class="text-gray-400 text-xl font-light mb-2">Why secret management is non-negotiable.</p>
+                            <p class="text-sm font-bold text-white/95 font-mono tracking-wide">[Sources: IBM Cost of a Data Breach 2023 | GitGuardian State of Secrets Sprawl 2024]</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="stat-item glass-panel p-8 rounded-3xl border-t border-l border-white/10 hover:border-[#00f3ff]/50 transition-colors group">
+                            <div class="clash font-bold text-[#00f3ff] mb-2 group-hover:scale-105 transition-transform origin-left flex items-baseline gap-1">
+                                <span class="text-4xl font-bold">$</span><span class="text-6xl stat-num" data-target="4.5">0</span><span class="text-4xl font-bold">M</span>
+                            </div>
+                            <div class="text-sm uppercase tracking-widest text-gray-400 font-bold">Avg Cost of a Data Breach</div>
+                        </div>
+                        <div class="stat-item glass-panel p-8 rounded-3xl border-t border-l border-white/10 hover:border-[#ff00f0]/50 transition-colors group">
+                            <div class="clash font-bold text-[#ff00f0] mb-2 group-hover:scale-105 transition-transform origin-left flex items-baseline gap-1">
+                                <span class="text-6xl stat-num" data-target="80">0</span><span class="text-4xl font-bold">%</span>
+                            </div>
+                            <div class="text-sm uppercase tracking-widest text-gray-400 font-bold">Breaches involve weak credentials</div>
+                        </div>
+                        <div class="stat-item glass-panel p-8 rounded-3xl border-t border-l border-white/10 hover:border-[#00f3ff]/50 transition-colors group">
+                            <div class="clash font-bold text-[#00f3ff] mb-2 group-hover:scale-105 transition-transform origin-left flex items-baseline gap-1">
+                                <span class="text-6xl stat-num" data-target="6">0</span><span class="text-4xl font-bold">min</span>
+                            </div>
+                            <div class="text-sm uppercase tracking-widest text-gray-400 font-bold">Average time required to exploit a leaked key</div>
+                        </div>
+                        <div class="stat-item glass-panel p-8 rounded-3xl border-t border-l border-white/10 hover:border-[#ff00f0]/50 transition-colors group">
+                            <div class="clash font-bold text-[#ff00f0] mb-2 group-hover:scale-105 transition-transform origin-left flex items-baseline gap-1">
+                                <span class="text-6xl stat-num" data-target="12.8">0</span><span class="text-4xl font-bold">M</span>
+                            </div>
+                            <div class="text-sm uppercase tracking-widest text-gray-400 font-bold">Secrets leaked publicly annually</div>
+                        </div>
+                        <div class="stat-item glass-panel p-8 rounded-3xl border-t border-l border-white/10 hover:border-[#00f3ff]/50 transition-colors group">
+                            <div class="clash font-bold text-[#00f3ff] mb-2 group-hover:scale-105 transition-transform origin-left flex items-baseline gap-1">
+                                <span class="text-6xl stat-num" data-target="204">0</span><span class="text-4xl font-bold">d</span>
+                            </div>
+                            <div class="text-sm uppercase tracking-widest text-gray-400 font-bold">Average time to identify a breach</div>
+                        </div>
+                        <div class="stat-item glass-panel p-8 rounded-3xl border-t border-l border-white/10 hover:border-[#ff00f0]/50 transition-colors group">
+                            <div class="clash font-bold text-[#ff00f0] mb-2 group-hover:scale-105 transition-transform origin-left flex items-baseline gap-1">
+                                <span class="text-4xl font-bold">+</span><span class="text-6xl stat-num" data-target="67">0</span><span class="text-4xl font-bold">%</span>
+                            </div>
+                            <div class="text-sm uppercase tracking-widest text-gray-400 font-bold">Year-Over-Year Increase In Leaks</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="scan-modes" class="py-32 relative z-10 min-h-screen flex flex-col justify-center">
+                <div class="container mx-auto px-6 max-w-6xl relative">
+                    <div class="text-center mb-16 mode-header black-haze">
+                        <h2 class="clash text-4xl md:text-5xl font-bold mb-4 uppercase">Pick a <span class="text-[#00f3ff]">mode</span> for your <span class="text-[#ff00f0]">scan</span></h2>
+                        <p class="text-gray-400 font-mono text-sm tracking-widest uppercase">Select depth parameters based on your requirements</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                        
+                        <!-- Rapid Mode -->
+                        <div id="card-rapid" class="mode-card glass-panel rounded-3xl p-8 border border-white/10 flex flex-col h-full hover:border-gray-500 transition-all duration-300 transform scale-100 relative">
+                            <div class="text-center mb-8">
+                                <h3 class="clash text-2xl font-bold text-white mb-2">Rapid</h3>
+                                <p class="text-xs text-gray-400 font-mono uppercase tracking-widest h-10">The basics for CI/CD & quick local checks</p>
+                                <div class="my-6">
+                                    <span class="text-5xl font-bold text-white">5</span><span class="text-xl text-gray-400 ml-1">MB</span>
+                                    <div class="text-xs text-gray-500 mt-1 uppercase tracking-widest">Max File Size</div>
+                                </div>
+                                <button onclick="selectScanMode('rapid')" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/10 uppercase tracking-widest">Select Rapid Mode</button>
+                            </div>
+                            <div class="border-t border-white/10 pt-6 flex-grow">
+                                <ul class="space-y-4 text-xs font-mono text-gray-300">
+                                    <li class="flex items-start gap-3"><i class="fas fa-terminal text-gray-500 mt-1"></i> <span><strong class="text-[#00f3ff]">Git Operation:</strong> <code>--depth 1 --single-branch</code></span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-microchip text-gray-500 mt-1"></i> <span><strong class="text-[#00f3ff]">Max File Size:</strong> 5,242,880 bytes (5MB cutoff)</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-spider text-gray-500 mt-1"></i> <span><strong class="text-[#00f3ff]">Web BFS Crawl:</strong> Capped at 20 URIs</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-history text-gray-500 mt-1"></i> <span><strong class="text-[#00f3ff]">Git Coverage:</strong> <code>HEAD</code> pointer only. <span class="text-red-400">Misses reverted secrets.</span></span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-memory text-gray-500 mt-1"></i> <span><strong class="text-[#00f3ff]">I/O Strategy:</strong> Direct RAM read < 1MB, <code>mmap</code> fallback up to 5MB</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-stopwatch text-gray-500 mt-1"></i> <span><strong class="text-[#00f3ff]">Complexity:</strong> O(F) where F = current tree</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Standard Mode (Highlighted by default) -->
+                        <div id="card-standard" class="mode-card glass-panel rounded-3xl p-8 border-2 border-[#00f3ff] bg-[#00f3ff]/5 flex flex-col h-full transform scale-105 shadow-[0_0_30px_rgba(0,243,255,0.15)] relative z-10 transition-all duration-300 hover:border-gray-500">
+                            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#00f3ff] text-black text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(0,243,255,0.5)]">Recommended</div>
+                            <div class="text-center mb-8">
+                                <h3 class="clash text-2xl font-bold text-white mb-2">Standard</h3>
+                                <p class="text-xs text-gray-400 font-mono uppercase tracking-widest h-10">Advanced inspection for daily developer workflows</p>
+                                <div class="my-6">
+                                    <span class="text-5xl font-bold text-[#00f3ff]">20</span><span class="text-xl text-gray-400 ml-1">MB</span>
+                                    <div class="text-xs text-[#00f3ff]/70 mt-1 uppercase tracking-widest font-bold">Max File Size</div>
+                                </div>
+                                <button onclick="selectScanMode('standard')" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-[#00f3ff] hover:bg-white text-black transition-colors uppercase tracking-widest shadow-[0_0_20px_rgba(0,243,255,0.3)]">Select Standard Mode</button>
+                            </div>
+                            <div class="border-t border-white/10 pt-6 flex-grow">
+                                <ul class="space-y-4 text-xs font-mono text-gray-200">
+                                    <li class="flex items-start gap-3"><i class="fas fa-terminal text-[#00f3ff] mt-1"></i> <span><strong class="text-[#ff00f0]">Git Operation:</strong> <code>--depth 100</code> (Full branch traversal)</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-microchip text-[#00f3ff] mt-1"></i> <span><strong class="text-[#ff00f0]">Max File Size:</strong> 20,971,520 bytes (20MB cutoff)</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-spider text-[#00f3ff] mt-1"></i> <span><strong class="text-[#ff00f0]">Web BFS Crawl:</strong> Capped at 50 URIs</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-history text-[#00f3ff] mt-1"></i> <span><strong class="text-[#ff00f0]">Git Coverage:</strong> Traverses last 100 commits. Catches recently deleted/reverted secrets.</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-memory text-[#00f3ff] mt-1"></i> <span><strong class="text-[#ff00f0]">I/O Strategy:</strong> Aggressive <code>mmap</code> chunking for medium monoliths</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-stopwatch text-[#00f3ff] mt-1"></i> <span><strong class="text-[#ff00f0]">Complexity:</strong> O(F + C_{100})</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Deep Mode -->
+                        <div id="card-deep" class="mode-card glass-panel rounded-3xl p-8 border border-white/10 flex flex-col h-full hover:border-gray-500 transition-all duration-300 transform scale-100 relative">
+                            <div class="text-center mb-8">
+                                <h3 class="clash text-2xl font-bold text-white mb-2">Deep</h3>
+                                <p class="text-xs text-gray-400 font-mono uppercase tracking-widest h-10">Thorough security audits & compliance</p>
+                                <div class="my-6">
+                                    <span class="text-5xl font-bold text-[#ff00f0]">∞</span><span class="text-xl text-gray-400 ml-1"></span>
+                                    <div class="text-xs text-gray-500 mt-1 uppercase tracking-widest">Max File Size</div>
+                                </div>
+                                <button onclick="selectScanMode('deep')" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/10 uppercase tracking-widest">Select Deep Mode</button>
+                            </div>
+                            <div class="border-t border-white/10 pt-6 flex-grow">
+                                <ul class="space-y-4 text-xs font-mono text-gray-300">
+                                    <li class="flex items-start gap-3"><i class="fas fa-terminal text-[#ff00f0] mt-1"></i> <span><strong class="text-white">Git Operation:</strong> Full Git Database Object Clone</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-microchip text-[#ff00f0] mt-1"></i> <span><strong class="text-white">Max File Size:</strong> 0 (Unrestricted IO buffer)</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-spider text-[#ff00f0] mt-1"></i> <span><strong class="text-white">Web BFS Crawl:</strong> Capped at 200 URIs</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-history text-[#ff00f0] mt-1"></i> <span><strong class="text-white">Git Coverage:</strong> Complete traversal of all branches, tags, and orphaned commits.</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-memory text-[#ff00f0] mt-1"></i> <span><strong class="text-white">I/O Strategy:</strong> Uncapped <code>mmap</code> limits (Requires high RAM for massive blobs)</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-stopwatch text-[#ff00f0] mt-1"></i> <span><strong class="text-white">Complexity:</strong> O(F_{all} * Commits)</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="scanner-app" class="py-32 relative min-h-screen z-10 flex flex-col justify-center">
+                <div class="container mx-auto px-6 max-w-5xl relative">
+                    <div class="text-center mb-16 app-header black-haze">
+                        <h2 class="clash text-4xl md:text-5xl font-bold mb-4 uppercase">Deploy <span class="text-[#ff00f0]">Scanner</span></h2>
+                        <p class="text-[#00f3ff] font-mono text-sm tracking-widest uppercase">Select parameters to begin deep inspection</p>
+                    </div>
+
+                    <div class="glass-panel rounded-3xl p-8 md:p-12 mb-16 app-form relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#ff00f0] to-transparent opacity-50"></div>
+
+                        <form id="scanForm" class="space-y-8 relative z-10">
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold tracking-widest text-gray-400 mb-3">Scan Target Type</label>
+                                    <div class="relative">
+                                        <select id="type" class="w-full bg-black/60 border border-white/10 rounded-xl px-6 py-5 text-white focus:outline-none focus:border-[#00f3ff] hover-glow transition-all duration-300 font-mono text-lg cursor-pointer">
+                                            <option value="github">GitHub Workspace</option>
+                                            <option value="website">Website Domain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="token-container">
+                                    <label class="block text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 flex justify-between">
+                                        <span>GitHub Token</span>
+                                        <span class="text-gray-600">Optional</span>
+                                    </label>
+                                    <input type="password" id="github_token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-black/60 border border-white/10 rounded-xl px-6 py-5 text-white focus:outline-none focus:border-[#ff00f0] hover:shadow-[0_0_20px_rgba(255,0,240,0.3)] transition-all duration-300 font-mono text-lg">
+                                </div>
+                            </div>
+
+                            <div id="github-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 flex justify-between">
+                                        <span>GitHub Username / Org</span>
+                                        <span class="text-red-400">Required</span>
+                                    </label>
+                                    <input type="text" id="gh_username" placeholder="e.g. octocat" class="w-full bg-black/60 border border-white/10 rounded-xl px-6 py-5 text-white focus:outline-none hover-glow transition-all duration-300 font-mono text-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 flex justify-between">
+                                        <span>Repository Name</span>
+                                        <span class="text-[#00f3ff]">Optional</span>
+                                    </label>
+                                    <input type="text" id="gh_repo" placeholder="e.g. Hello-World" class="w-full bg-black/60 border border-white/10 rounded-xl px-6 py-5 text-white focus:outline-none hover-glow transition-all duration-300 font-mono text-lg">
+                                    <p class="text-[10px] text-gray-500 mt-3 font-mono uppercase tracking-wider">Note: If omitted, your entire codebase will be scanned.</p>
+                                </div>
+                            </div>
+
+                            <div id="website-inputs" class="hidden">
+                                <label class="block text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 flex justify-between">
+                                    <span>Website URL</span>
+                                    <span class="text-red-400">Required</span>
+                                </label>
+                                <input type="text" id="web_url" placeholder="e.g. example.com or https://example.com" class="w-full bg-black/60 border border-white/10 rounded-xl px-6 py-5 text-white focus:outline-none hover-glow transition-all duration-300 font-mono text-lg">
+                            </div>
+
+                            <button type="submit" id="submitScanBtn" class="w-full relative px-8 py-5 bg-[#0a0a0f] text-[#00f3ff] border border-[#00f3ff] rounded-xl font-bold uppercase tracking-widest hover:bg-[#00f3ff] hover:text-black transition-all duration-300 overflow-hidden group mt-4">
+                                <span id="scanBtnText" class="relative z-10 flex items-center justify-center gap-3">
+                                    <i class="fas fa-radar"></i> Initiate Standard Scan
+                                </span>
+                            </button>
+
+                            <div class="mt-6 flex items-center justify-center gap-2">
+                                <label class="text-xs uppercase font-bold tracking-widest text-gray-500">Mode:</label>
+                                <div class="flex gap-1 bg-black/60 rounded-lg p-1 border border-white/10">
+                                    <button type="button" data-mode="rapid" class="mode-btn px-4 py-2 rounded-md text-xs font-mono font-bold uppercase tracking-widest transition-all duration-200 text-gray-500 hover:text-white">Rapid</button>
+                                    <button type="button" data-mode="standard" class="mode-btn px-4 py-2 rounded-md text-xs font-mono font-bold uppercase tracking-widest transition-all duration-200 bg-[#00f3ff]/15 text-[#00f3ff] border border-[#00f3ff]/30">Standard</button>
+                                    <button type="button" data-mode="deep" class="mode-btn px-4 py-2 rounded-md text-xs font-mono font-bold uppercase tracking-widest transition-all duration-200 text-gray-500 hover:text-white">Deep</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="loadingState" class="hidden absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center z-20">
+                            <div class="w-full max-w-md relative h-[2px] bg-white/5 overflow-hidden mb-6 rounded-full">
+                                <div class="scanner-loader"></div>
+                            </div>
+                            <div class="text-[#00f3ff] font-mono text-xl mb-2 animate-pulse tracking-widest">ANALYZING TARGET...</div>
+                            <div class="text-gray-500 font-mono text-sm loading-text">Extracting entropy signatures</div>
+                            <div class="text-[#ff00f0] font-mono text-xs mt-2 progress-text"></div>
+                        </div>
+                    </div>
+
+                    <div id="resultsContainer" class="hidden">
+                        <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 border-b border-white/10 pb-6">
+                            <div class="mb-4 md:mb-0">
+                                <h3 class="clash text-3xl font-bold text-white uppercase"><span class="text-[#ff00f0]">Scan</span> Report</h3>
+                                <p class="text-[#00f3ff] font-mono text-sm mt-2" id="resultsMeta">Target: ...</p>
+                            </div>
+                            <div class="text-left md:text-right">
+                                <div class="text-5xl font-bold text-[#ff00f0] leading-none" id="secretsCount">0</div>
+                                <div class="text-gray-500 uppercase tracking-widest text-xs font-bold mt-1">Exposures Found</div>
+                            </div>
+                        </div>
+                        <div id="findingsList" class="space-y-6"></div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="border-t border-white/10 bg-black/50 backdrop-blur-xl pt-20 pb-10 z-10 relative">
+                <div class="container mx-auto px-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-8">
+                        <div class="text-center md:text-left">
+                            <h2 class="clash text-3xl font-bold mb-2 tracking-widest">SECRET<span class="text-[#00f3ff]">SCANNER</span></h2>
+                            <p class="text-gray-500 text-sm font-mono">Automated credential intelligence.</p>
+                        </div>
+                        <div class="flex flex-wrap justify-center gap-8">
+                            <a href="#" class="text-gray-500 hover:text-[#00f3ff] transition-colors uppercase tracking-widest text-xs font-bold">Disclaimer</a>
+                            <a href="#" class="text-gray-500 hover:text-[#00f3ff] transition-colors uppercase tracking-widest text-xs font-bold">Privacy</a>
+                            <a href="#" class="text-gray-500 hover:text-[#00f3ff] transition-colors uppercase tracking-widest text-xs font-bold">GitHub ToS</a>
+                        </div>
+                    </div>
+                    <div class="text-center border-t border-white/5 pt-8 text-gray-600 text-xs font-mono">
+                        <p>For ethical hacking and authorized auditing only. Usage of this tool for attacking targets without prior mutual consent is illegal.</p>
+                        <p class="mt-2">© 2026 SecretScanner. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[10000] flex flex-col gap-2"></div>
+
+    <script>
+        // --- Smooth Scrolling (Lenis) ---
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) lenis.scrollTo(target, { offset: 0, duration: 1.5 });
+            });
+        });
+
+        // --- GSAP Setup ---
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // --- Custom Cursor Halo ---
+        let mouseClientX = -1000; let mouseClientY = -1000;
+        let haloX = window.innerWidth / 2; let haloY = window.innerHeight / 2;
+        let isMouseInWindow = false;
+        const cursorHalo = document.getElementById('cursor-halo');
+
+        document.addEventListener('mousemove', (e) => {
+            isMouseInWindow = true;
+            mouseClientX = e.clientX; mouseClientY = e.clientY;
+        });
+        document.addEventListener('mouseleave', () => {
+            isMouseInWindow = false;
+        });
+
+        // Glitch Logic Setup
+        const secretSpans = document.getElementById('glitch-secret') ? Array.from(document.getElementById('glitch-secret').children) : [];
+        const scannerSpans = document.getElementById('glitch-scanner') ? Array.from(document.getElementById('glitch-scanner').children) : [];
+        const allSpans = [...secretSpans, ...scannerSpans];
+        const asciiChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+<>?";
+        
+        allSpans.forEach(span => {
+            span.dataset.original = span.innerText;
+        });
+
+        const asciiBg = document.getElementById('ascii-bg');
+        if(asciiBg) {
+            let str = "";
+            const chunks = ["0x00F3FF", "NULL", "VULN_FOUND", "ACCESS_DENIED", "0100110", "SYS_HALT", "OVERFLOW"];
+            for(let i=0; i<60; i++) {
+                for(let j=0; j<25; j++) { str += chunks[Math.floor(Math.random() * chunks.length)] + " "; }
+                str += "\n";
+            }
+            asciiBg.innerText = str;
+        }
+
+        let frameCount = 0;
+        
+        const trail1 = document.getElementById('trail-1');
+        const trail2 = document.getElementById('trail-2');
+        const trail3 = document.getElementById('trail-3');
+        const trail4 = document.getElementById('trail-4');
+        const trail5 = document.getElementById('trail-5');
+        let t1X = -100, t1Y = -100;
+        let t2X = -100, t2Y = -100;
+        let t3X = -100, t3Y = -100;
+        let t4X = -100, t4Y = -100;
+        let t5X = -100, t5Y = -100;
+
+        gsap.ticker.add(() => {
+            haloX += (mouseClientX - haloX) * 0.15;
+            haloY += (mouseClientY - haloY) * 0.15;
+            if (cursorHalo) cursorHalo.style.transform = `translate(${haloX}px, ${haloY}px)`;
+            
+            t1X += (haloX - t1X) * 0.25; t1Y += (haloY - t1Y) * 0.25;
+            if (trail1) trail1.style.transform = `translate(${t1X}px, ${t1Y}px)`;
+            
+            t2X += (t1X - t2X) * 0.25; t2Y += (t1Y - t2Y) * 0.25;
+            if (trail2) trail2.style.transform = `translate(${t2X}px, ${t2Y}px)`;
+            
+            t3X += (t2X - t3X) * 0.25; t3Y += (t2Y - t3Y) * 0.25;
+            if (trail3) trail3.style.transform = `translate(${t3X}px, ${t3Y}px)`;
+            
+            t4X += (t3X - t4X) * 0.25; t4Y += (t3Y - t4Y) * 0.25;
+            if (trail4) trail4.style.transform = `translate(${t4X}px, ${t4Y}px)`;
+            
+            t5X += (t4X - t5X) * 0.25; t5Y += (t4Y - t5Y) * 0.25;
+            if (trail5) trail5.style.transform = `translate(${t5X}px, ${t5Y}px)`;
+            
+            // Text Glitch Effect per character
+            frameCount++;
+            if (frameCount % 2 === 0) { // Faster glitch updates
+                const haloRadius = 60; // Reduced radius
+                
+                allSpans.forEach(span => {
+                    const rect = span.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+                    
+                    const dx = cx - haloX;
+                    const dy = cy - haloY;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if (dist < haloRadius) {
+                        span.innerText = asciiChars[Math.floor(Math.random() * asciiChars.length)];
+                        if (span.parentElement.id === 'glitch-secret') {
+                            span.style.color = "transparent";
+                            span.style.backgroundImage = "linear-gradient(to right, #00f3ff, #ff00f0)";
+                            span.style.webkitBackgroundClip = "text";
+                            span.style.backgroundClip = "text";
+                        } else if (span.parentElement.id === 'glitch-scanner') {
+                            span.style.color = "#ffffff";
+                            span.style.backgroundImage = "none";
+                            span.style.webkitBackgroundClip = "border-box";
+                            span.style.backgroundClip = "border-box";
+                        }
+                    } else {
+                        if (span.innerText !== span.dataset.original) {
+                            span.innerText = span.dataset.original;
+                            span.style.color = "";
+                            span.style.backgroundImage = "";
+                            span.style.webkitBackgroundClip = "";
+                            span.style.backgroundClip = "";
+                        }
+                    }
+                });
+            }
+            
+            // --- Three.js Render Update ---
+            const elapsedTime = clock.getElapsedTime();
+            bgMaterial.uniforms.uTime.value = elapsedTime;
+            
+            // Mouse Parallax
+            if (isMouseInWindow) {
+                targetRotX = (mouseClientY / window.innerHeight - 0.5) * 0.4;
+                targetRotY = (mouseClientX / window.innerWidth - 0.5) * 0.4;
+            } else {
+                targetRotX = 0;
+                targetRotY = 0;
+            }
+            
+            scene.rotation.x += (targetRotX - scene.rotation.x) * 0.05;
+            scene.rotation.y += (targetRotY - scene.rotation.y) * 0.05;
+            
+            // Sync Pointer Light to mouse position
+            if (typeof pointerLight !== 'undefined') {
+                pointerLight.position.x = (haloX / window.innerWidth) * 40 - 20;
+                pointerLight.position.y = -(haloY / window.innerHeight) * 40 + 20;
+            }
+            
+            // Gentle continuous float for the lock
+            lockGroup.position.y += Math.sin(elapsedTime * 2) * 0.005;
+            
+            renderer.render(scene, camera);
+        });
+
+        // --- THREE.JS Holographic Lock & Shader Background ---
+        const canvas = document.getElementById('webgl-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 20;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(1); // Capped to 1 to prevent GPU timeout on dense meshes
+
+        // Background Flowy Shader
+        const bgGeometry = new THREE.PlaneGeometry(2500, 2500);
+        const bgMaterial = new THREE.ShaderMaterial({
+            uniforms: { uTime: { value: 0 } },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+            `,
+            fragmentShader: `
+                uniform float uTime;
+                varying vec2 vUv;
+                void main() {
+                    vec2 uv = vUv * 15.0; // Scaled up to fix the massive plane
+                    float wave1 = sin(uv.x * 2.0 + uTime * 0.5) * 0.5 + 0.5;
+                    float wave2 = cos(uv.y * 1.5 - uTime * 0.7 + wave1) * 0.5 + 0.5;
+                    float wave3 = sin((uv.x + uv.y) * 1.0 + uTime * 0.9) * 0.5 + 0.5;
+                    
+                    vec3 color1 = vec3(0.0, 0.0, 0.15);   // Deep Dark Blue
+                    vec3 color2 = vec3(0.1, 0.0, 0.25);   // Rich Purple
+                    vec3 color3 = vec3(0.2, 0.0, 0.15);   // Magenta/Pink
+                    vec3 color4 = vec3(0.0, 0.05, 0.25);  // Dark Royal Blue
+                    
+                    vec3 mix1 = mix(color1, color2, wave1);
+                    vec3 mix2 = mix(color3, color4, wave2);
+                    vec3 finalColor = mix(mix1, mix2, wave3 * 0.7);
+                    
+                    gl_FragColor = vec4(finalColor, 1.0);
+                }
+            `,
+            depthWrite: false
+        });
+        const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
+        bgMesh.position.z = -50;
+        scene.add(bgMesh);
+
+        // Holographic Lock Object
+        const lockGroup = new THREE.Group();
+        scene.add(lockGroup);
+        // Positioned for Rule of Thirds, slightly to the right and lower
+        lockGroup.position.set(6.5, -1.5, 0); 
+        
+        // Tilt it slightly
+        lockGroup.rotation.set(0.2, -0.4, 0);
+
+        const holoMaterial = new THREE.MeshPhongMaterial({
+            color: 0x001133, emissive: 0x00f3ff, emissiveIntensity: 0.8,
+            transparent: true, opacity: 0.5, shininess: 100,
+            blending: THREE.AdditiveBlending,
+            wireframe: false
+        });
+        
+        const loader = new THREE.OBJLoader();
+        loader.load('/static/models/lock.obj', (obj) => {
+            const box = new THREE.Box3().setFromObject(obj);
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = 15.5 / maxDim; 
+            obj.scale.set(scale, scale, scale);
+            
+            // Recompute box after scaling to find exact center
+            const scaledBox = new THREE.Box3().setFromObject(obj);
+            const center = scaledBox.getCenter(new THREE.Vector3());
+            obj.position.sub(center); // Center the entire object relative to the lockGroup
+            
+            const meshes = [];
+            obj.traverse((child) => {
+                if (child.isMesh) meshes.push(child);
+            });
+            
+            meshes.forEach((child) => {
+                child.material = holoMaterial;
+                
+                // Create blocky black triangular wireframe
+                let wireGeom = child.geometry;
+                try {
+                    if (typeof THREE.SimplifyModifier !== 'undefined') {
+                        const modifier = new THREE.SimplifyModifier();
+                        const count = child.geometry.attributes.position.count;
+                        if (count > 2000) {
+                            wireGeom = modifier.modify(child.geometry, Math.floor(count * 0.1));
+                        } else {
+                            wireGeom = child.geometry;
+                        }
+                    }
+                } catch(e) {
+                    console.warn("Could not simplify geometry", e);
+                }
+                
+                const wireMat = new THREE.MeshBasicMaterial({ 
+                    color: 0x00f3ff, wireframe: true, 
+                    transparent: true, opacity: 0.15, 
+                    blending: THREE.AdditiveBlending
+                });
+                const wireMesh = new THREE.Mesh(wireGeom, wireMat);
+                child.add(wireMesh);
+            });
+            
+            lockGroup.add(obj);
+        }, undefined, (err) => { console.error('Error loading lock.obj', err); });
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        
+        // Dynamic Pointer Highlight Light
+        const pointerLight = new THREE.PointLight(0xffffff, 5, 50);
+        pointerLight.position.set(0, 0, 10);
+        scene.add(pointerLight);
+
+        let targetRotX = 0; let targetRotY = 0;
+        const clock = new THREE.Clock();
+        
+        ScrollTrigger.create({
+            trigger: "body", start: "top top", end: "bottom bottom",
+            onUpdate: (self) => {
+                const progress = self.progress;
+                
+                // C-curve trajectory in X/Z plane (top view)
+                // X forms a parabola: starts right (6.5), swings left, returns right
+                // Z moves linearly forward from 0 to +25 (camera is at +20, so it exits the screen)
+                const targetX = 48 * Math.pow(progress - 0.5, 2) - 5.5;
+                const targetZ = progress * 25;
+                
+                gsap.to(lockGroup.position, {
+                    x: targetX, 
+                    y: -1.5 - progress * 2,     
+                    z: targetZ, 
+                    duration: 0.5, ease: "power2.out"
+                });
+                
+                // Slowly turn over the scroll
+                gsap.to(lockGroup.rotation, {
+                    x: 0.2 + progress * Math.PI,
+                    y: -0.4 + progress * Math.PI * 2,
+                    duration: 0.5, ease: "power2.out"
+                });
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        gsap.fromTo(".hero-elem", { y: -80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, stagger: 0.15, ease: "back.out(1.2)", delay: 0.2 });
+
+
+
+        document.querySelectorAll('.stat-num').forEach(stat => {
+            const target = parseFloat(stat.getAttribute('data-target'));
+            ScrollTrigger.create({ trigger: stat, start: "top 85%", once: true, onEnter: () => { 
+                gsap.to(stat, { 
+                    innerHTML: target, 
+                    duration: 2.5, 
+                    onUpdate: function() {
+                        stat.innerHTML = target % 1 === 0 ? Math.round(this.targets()[0].innerHTML) : parseFloat(this.targets()[0].innerHTML).toFixed(1);
+                    },
+                    ease: "expo.out" 
+                }); 
+            } });
+        });
+
+        gsap.from(".mode-header", { scrollTrigger: { trigger: "#scan-modes", start: "top 75%" }, y: -30, opacity: 0, duration: 1 });
+        gsap.from(".app-header", { scrollTrigger: { trigger: "#scanner-app", start: "top 75%" }, y: -30, opacity: 0, duration: 1 });
+        gsap.from(".app-form", { scrollTrigger: { trigger: ".app-form", start: "top 85%" }, y: 50, opacity: 0, duration: 1.2, ease: "expo.out" });
+
+        // --- UI Input Separation Logic ---
+        const typeSelect = document.getElementById('type');
+        const githubInputs = document.getElementById('github-inputs');
+        const websiteInputs = document.getElementById('website-inputs');
+        const tokenContainer = document.getElementById('token-container');
+
+        typeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'github') {
+                githubInputs.classList.remove('hidden'); githubInputs.classList.add('grid');
+                websiteInputs.classList.add('hidden');
+                tokenContainer.style.display = 'block';
+            } else {
+                githubInputs.classList.add('hidden'); githubInputs.classList.remove('grid');
+                websiteInputs.classList.remove('hidden');
+                tokenContainer.style.display = 'none';
+            }
+        });
+
+        // --- Custom Toast Notification ---
+        function showToast(msg, isError = false) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const color = isError ? '#ff4444' : '#00f3ff';
+            const icon = isError ? 'fa-exclamation-circle' : 'fa-info-circle';
+            toast.className = 'glass-panel px-4 py-3 rounded-lg font-mono text-sm shadow-lg flex items-center gap-3 border-l-4 transform translate-x-full opacity-0';
+            toast.style.borderLeftColor = color;
+            toast.innerHTML = `<i class="fas ${icon}" style="color:${color}"></i> <span class="text-gray-200">${msg}</span>`;
+            
+            container.appendChild(toast);
+            gsap.to(toast, { x: 0, opacity: 1, duration: 0.4, ease: "back.out(1.5)" });
+            setTimeout(() => { gsap.to(toast, { x: "100%", opacity: 0, duration: 0.4, ease: "power2.in", onComplete: () => toast.remove() }); }, 4000);
+        }
+
+        // --- Form Submit & Polling Logic ---
+        const form = document.getElementById('scanForm');
+        const loadingState = document.getElementById('loadingState');
+        const loadingText = document.querySelector('.loading-text');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const findingsList = document.getElementById('findingsList');
+        const submitBtn = document.getElementById('submitScanBtn');
+        let pollTimeout;
+        let selectedMode = 'standard';
+        let currentTaskId = null;
+
+        // Mode selector logic
+        function updateModeSelectorUI(mode) {
+            document.querySelectorAll('.mode-btn').forEach(b => {
+                b.classList.remove('bg-[#00f3ff]/15', 'text-[#00f3ff]', 'border', 'border-[#00f3ff]/30');
+                b.classList.add('text-gray-500');
+                if (b.dataset.mode === mode) {
+                    b.classList.add('bg-[#00f3ff]/15', 'text-[#00f3ff]', 'border', 'border-[#00f3ff]/30');
+                    b.classList.remove('text-gray-500');
+                }
+            });
+            selectedMode = mode;
+            
+            // Update the main scan button text based on mode
+            const scanBtnText = document.getElementById('scanBtnText');
+            if (scanBtnText) {
+                const modeCapitalized = mode.charAt(0).toUpperCase() + mode.slice(1);
+                scanBtnText.innerHTML = `<i class="fas fa-radar"></i> Initiate ${modeCapitalized} Scan`;
+            }
+
+            // Update the big mode cards highlight
+            document.querySelectorAll('.mode-card').forEach(card => {
+                // Reset to default
+                card.classList.remove('border-2', 'border-[#00f3ff]', 'bg-[#00f3ff]/5', 'scale-105', 'shadow-[0_0_30px_rgba(0,243,255,0.15)]', 'z-10');
+                card.classList.add('border', 'border-white/10', 'scale-100');
+            });
+            
+            // Highlight the selected card
+            const activeCard = document.getElementById(`card-${mode}`);
+            if (activeCard) {
+                activeCard.classList.remove('border', 'border-white/10', 'scale-100');
+                activeCard.classList.add('border-2', 'border-[#00f3ff]', 'bg-[#00f3ff]/5', 'scale-105', 'shadow-[0_0_30px_rgba(0,243,255,0.15)]', 'z-10');
+            }
+        }
+
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateModeSelectorUI(btn.dataset.mode);
+            });
+        });
+
+        window.selectScanMode = function(mode) {
+            updateModeSelectorUI(mode);
+        };
+
+        const loadingMessages = [
+            "Cloning repository & extracting Git objects...",
+            "Executing deep Git history diffing...",
+            "Evaluating code entropy & regex models...",
+            "Correlating paired credentials...",
+            "Deduplicating cross-commit leaks...",
+            "Pinging asynchronous validation endpoints...",
+            "Initializing multithreaded IO pool...",
+            "Spawning concurrent file scanners...",
+            "Parsing abstract syntax trees for context...",
+            "Running Shannon entropy calculations...",
+            "Applying Naive Bayes trigram classifier...",
+            "Checking token structure against known prefixes...",
+            "Resolving symbolic links in repository tree...",
+            "Streaming raw Git diffs through regex engine...",
+            "Filtering merge commits from scan surface...",
+            "Skipping bot-authored commits (dependabot, CI)...",
+            "Decoding Base64 payloads for embedded secrets...",
+            "Validating GitHub PATs against /user endpoint...",
+            "Verifying Stripe keys against /v1/charges...",
+            "Cross-referencing OAuth client_id + secret pairs...",
+            "Scanning .env files for unencrypted credentials...",
+            "Inspecting Docker Compose environment blocks...",
+            "Checking Kubernetes manifests for inline secrets...",
+            "Parsing Terraform state files for access keys...",
+            "Evaluating CI/CD pipeline configurations...",
+            "Checking GitHub Actions workflow secrets...",
+            "Analyzing Jenkinsfile credential bindings...",
+            "Scanning infrastructure-as-code templates...",
+            "Hashing findings for deduplication index...",
+            "Building severity scoring matrix...",
+            "Mapping file paths to repository origins...",
+            "Classifying tokens by provider fingerprint...",
+            "Rejecting pure hexadecimal hashes (SHA-256)...",
+            "Filtering UUID-formatted false positives...",
+            "Applying context window analysis (±60 chars)...",
+            "Checking assignment operators for secret intent...",
+            "Excluding CSS transform matrices from results...",
+            "Skipping data:image Base64 inline assets...",
+            "Filtering package integrity checksums...",
+            "Detecting URL routing parameters in context...",
+            "Scanning HTTP response headers for token leaks...",
+            "Inspecting JSON config files for API credentials...",
+            "Analyzing YAML anchor/alias structures...",
+            "Checking .npmrc files for auth tokens...",
+            "Scanning pip.conf for index-url credentials...",
+            "Inspecting Maven settings.xml for server auth...",
+            "Checking Gradle properties for signing keys...",
+            "Evaluating Ruby Gemfile sources for tokens...",
+            "Scanning composer.json for OAuth tokens...",
+            "Parsing AWS credential chain configuration...",
+            "Checking GCP service account JSON keys...",
+            "Analyzing Azure connection strings...",
+            "Inspecting Slack webhook URL payloads...",
+            "Scanning Twilio auth token patterns...",
+            "Checking SendGrid API key structures...",
+            "Evaluating JWT payloads for embedded secrets...",
+            "Running final false-positive suppression pass...",
+            "Persisting findings to analytics database...",
+            "Computing aggregate risk assessment score...",
+            "Generating exportable scan report..."
+        ];
+
+
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const type = typeSelect.value;
+            let targetStr = '';
+            let repo_name = '';
+
+            if (type === 'github') {
+                targetStr = document.getElementById('gh_username').value.trim();
+                repo_name = document.getElementById('gh_repo').value.trim();
+                if (!targetStr) { showToast('GitHub Username / Org is required.', true); return; }
+            } else {
+                targetStr = document.getElementById('web_url').value.trim();
+                if (!targetStr) { showToast('Website URL is required.', true); return; }
+            }
+
+            const github_token = document.getElementById('github_token').value.trim();
+
+            resultsContainer.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            submitBtn.disabled = true; submitBtn.classList.add('opacity-50');
+
+            let msgIdx = 0;
+            const msgInterval = setInterval(() => {
+                msgIdx = (msgIdx + 1) % loadingMessages.length;
+                loadingText.innerText = loadingMessages[msgIdx];
+            }, 1500);
+
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ target: targetStr, repo_name: repo_name, type: type, github_token, mode: selectedMode })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+
+                function schedulePoll() {
+                    pollTimeout = setTimeout(() => checkResult(data.task_id, msgInterval, targetStr, repo_name, () => {
+                        schedulePoll();
+                    }), 2000);
+                }
+                schedulePoll();
+            } catch (err) {
+                clearInterval(msgInterval);
+                showError(err.message);
+            }
+        });
+
+        async function checkResult(taskId, msgInterval, targetStr, repo_name, continuePolling) {
+            try {
+                const res = await fetch(`/result/${taskId}`);
+                const data = await res.json();
+                if (data.status === 'ready') {
+                    clearTimeout(pollTimeout); clearInterval(msgInterval);
+                    loadingState.classList.add('hidden');
+                    const progText = document.querySelector('.progress-text');
+                    if (progText) progText.innerText = "";
+                    submitBtn.disabled = false; submitBtn.classList.remove('opacity-50');
+                    currentTaskId = taskId;
+                    renderResults(data.result, targetStr, repo_name);
+                } else if (data.status === 'error') {
+                    clearTimeout(pollTimeout); clearInterval(msgInterval);
+                    const progText = document.querySelector('.progress-text');
+                    if (progText) progText.innerText = "";
+                    showError(data.error);
+                } else {
+                    const progText = document.querySelector('.progress-text');
+                    if (progText && data.stage) {
+                        if (data.stage === 'fetching') {
+                            progText.innerText = `FETCHING REPOSITORY LIST...`;
+                        } else if (data.stage === 'cloning') {
+                            progText.innerText = `CLONING REPOSITORIES: ${data.cloned_repos || 0} / ${data.total_repos || '?'}`;
+                        } else if (data.stage === 'crawling') {
+                            progText.innerText = `CRAWLING WEBPAGE ROUTES...`;
+                        } else if (data.stage === 'scraping') {
+                            progText.innerText = `SCRAPING PAGES: ${data.scraped_pages || 0} / ${data.total_pages || '?'}`;
+                        } else if (data.stage === 'scanning') {
+                            progText.innerText = `SCANNING FILES: ${data.scanned_files || 0} / ${data.total_files || '?'}`;
+                        }
+                    }
+                    continuePolling();
+                }
+            } catch (e) { console.error(e); continuePolling(); }
+        }
+
+        function showError(msg) {
+            loadingState.classList.add('hidden');
+            submitBtn.disabled = false; submitBtn.classList.remove('opacity-50');
+            resultsContainer.classList.remove('hidden');
+            document.getElementById('resultsMeta').innerText = "Status: FAILED";
+            document.getElementById('secretsCount').innerText = "ERR";
+            findingsList.innerHTML = `<div class="p-6 border border-red-500/50 bg-red-500/10 rounded-xl text-red-400 font-mono">> CRITICAL ERROR: ${escapeHtml(msg)}</div>`;
+            gsap.fromTo(resultsContainer, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        window.toggleLocations = function (id, btn, count) {
+            const el = document.getElementById(id);
+            const span = btn.querySelector('span');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                span.innerText = `- Hide ${count} locations`;
+            } else {
+                el.classList.add('hidden');
+                span.innerText = `+ ${count} more locations`;
+            }
+        };
+
+        window.filterSeverity = function(sev) {
+            const items = document.querySelectorAll('.result-item');
+            items.forEach(item => {
+                const itemSev = item.getAttribute('data-severity');
+                const isDismissed = item.getAttribute('data-dismissed') === 'true';
+                const isActive = item.getAttribute('data-active');
+                
+                if (sev === 'ALL') {
+                    item.style.display = 'block';
+                } else if (sev === 'DISMISSED') {
+                    item.style.display = isDismissed ? 'block' : 'none';
+                } else if (sev === 'ACTIVE') {
+                    item.style.display = (isActive === 'active' && !isDismissed) ? 'block' : 'none';
+                } else if (sev === 'INACTIVE') {
+                    item.style.display = (isActive === 'inactive' && !isDismissed) ? 'block' : 'none';
+                } else {
+                    item.style.display = (itemSev === sev && !isDismissed) ? 'block' : 'none';
+                }
+            });
+        };
+
+        function renderResults(resultData, targetStr, repo_name) {
+            resultsContainer.classList.remove('hidden');
+            document.getElementById('resultsMeta').innerText = `Target: ${escapeHtml(targetStr)}${repo_name ? '/' + escapeHtml(repo_name) : ''}`;
+
+            let findings = []; let repoMsg = "";
+            if (Array.isArray(resultData)) {
+                findings = resultData;
+            } else if (resultData && resultData.findings) {
+                findings = resultData.findings;
+                let timeMsg = "";
+                if (resultData.total_time) {
+                    const totalSec = Math.floor(resultData.total_time);
+                    if (totalSec >= 60) {
+                        const min = Math.floor(totalSec / 60);
+                        const sec = totalSec % 60;
+                        timeMsg = ` in ${min}m ${sec}s`;
+                    } else {
+                        timeMsg = ` in ${resultData.total_time.toFixed(2)}s`;
+                    }
+                }
+                let targetNoun = "targets";
+                if (resultData.target_type === 'github') targetNoun = resultData.repos_scanned === 1 ? "repository" : "repositories";
+                else if (resultData.target_type === 'url') targetNoun = resultData.repos_scanned === 1 ? "domain" : "domains";
+                else if (resultData.target_type === 'local') targetNoun = resultData.repos_scanned === 1 ? "folder" : "folders";
+                repoMsg = `<div class="mb-6 p-4 border border-[#00f3ff]/30 bg-[#00f3ff]/5 rounded-xl text-[#00f3ff] font-mono text-sm tracking-widest uppercase">Successfully scanned ${resultData.repos_scanned} ${targetNoun}${timeMsg}.</div>`;
+            }
+
+            // Sort by severity (CRITICAL first)
+            const sevOrder = {CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3};
+            findings.sort((a, b) => (sevOrder[a.severity] || 3) - (sevOrder[b.severity] || 3));
+
+            const openCount = findings.filter(f => f.triage_status === 'open' || !f.triage_status).length;
+            gsap.fromTo("#secretsCount", { innerHTML: 0 }, { innerHTML: openCount, duration: 2, snap: { innerHTML: 1 }, ease: "expo.out" });
+
+            if (findings.length === 0) {
+                findingsList.innerHTML = repoMsg + `<div class="p-10 border border-[#00f3ff]/20 glass-panel rounded-2xl text-center"><div class="text-[#00f3ff] text-5xl mb-4"><i class="fas fa-shield-check"></i></div><h4 class="text-2xl font-bold mb-2 text-white uppercase tracking-wider">Zero Threats Detected</h4><p class="text-gray-500 font-mono text-sm">No exposed credentials were found in the target scope.</p></div>`;
+            } else {
+                // Triage summary + export bar
+                const critCount = findings.filter(f => f.severity === 'CRITICAL').length;
+                const highCount = findings.filter(f => f.severity === 'HIGH').length;
+                const medCount = findings.filter(f => f.severity === 'MEDIUM').length;
+                const fpCount = findings.filter(f => f.triage_status === 'false_positive').length;
+                const testCount = findings.filter(f => f.triage_status === 'test').length;
+
+                const activeCount = findings.filter(f => f.is_active === 'active').length;
+                const inactiveCount = findings.filter(f => f.is_active === 'inactive').length;
+
+                let html = repoMsg;
+                html += `<div class="mb-6 p-4 glass-panel rounded-xl border border-white/10 flex flex-wrap justify-between items-center gap-4">
+                    <div class="flex flex-wrap gap-3 text-xs font-mono font-bold tracking-widest">
+                        <button onclick="filterSeverity('CRITICAL')" class="px-3 py-1.5 rounded bg-red-500/20 text-red-400 border border-red-500/40 hover:bg-red-500/40 transition-colors focus:outline-none">🔴 ${critCount} CRITICAL</button>
+                        <button onclick="filterSeverity('HIGH')" class="px-3 py-1.5 rounded bg-orange-500/20 text-orange-400 border border-orange-500/40 hover:bg-orange-500/40 transition-colors focus:outline-none">🟠 ${highCount} HIGH</button>
+                        <button onclick="filterSeverity('MEDIUM')" class="px-3 py-1.5 rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 hover:bg-yellow-500/40 transition-colors focus:outline-none">🟡 ${medCount} MEDIUM</button>
+                        <button onclick="filterSeverity('ACTIVE')" class="px-3 py-1.5 rounded bg-red-500/20 text-red-400 border border-red-500/40 hover:bg-red-500/40 transition-colors focus:outline-none">⚡ ${activeCount} Active</button>
+                        <button onclick="filterSeverity('INACTIVE')" class="px-3 py-1.5 rounded bg-green-500/20 text-green-400 border border-green-500/40 hover:bg-green-500/40 transition-colors focus:outline-none">🚫 ${inactiveCount} Inactive</button>
+                        <button onclick="filterSeverity('DISMISSED')" class="px-3 py-1.5 rounded bg-gray-500/20 text-gray-400 border border-gray-500/40 hover:bg-gray-500/40 transition-colors focus:outline-none">✅ ${fpCount} Dismissed</button>
+                        <button onclick="filterSeverity('ALL')" class="px-3 py-1.5 rounded bg-[#00f3ff]/20 text-[#00f3ff] border border-[#00f3ff]/40 hover:bg-[#00f3ff]/40 transition-colors focus:outline-none">Show All</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="exportResults('csv')" class="text-xs font-mono font-bold px-4 py-2 bg-[#00f3ff]/10 hover:bg-[#00f3ff]/20 rounded border border-[#00f3ff]/30 text-[#00f3ff] transition-colors"><i class="fas fa-file-csv mr-1"></i> CSV</button>
+                        <button onclick="exportResults('json')" class="text-xs font-mono font-bold px-4 py-2 bg-[#00f3ff]/10 hover:bg-[#00f3ff]/20 rounded border border-[#00f3ff]/30 text-[#00f3ff] transition-colors"><i class="fas fa-file-code mr-1"></i> JSON</button>
+                        <a href="/hook/download" class="text-xs font-mono font-bold px-4 py-2 bg-[#ff00f0]/10 hover:bg-[#ff00f0]/20 rounded border border-[#ff00f0]/30 text-[#ff00f0] transition-colors"><i class="fas fa-shield-alt mr-1"></i> Pre-commit Hook</a>
+                    </div>
+                </div>`;
+
+                findings.forEach((f, index) => {
+                    const isGh = f.type.toLowerCase().includes('github'); 
+                    const isAws = f.type.toLowerCase().includes('aws');
+                    const badgeColor = isGh ? 'bg-[#ff00f0]/20 text-[#ff00f0] border-[#ff00f0]/50' : isAws ? 'bg-orange-500/20 text-orange-400 border-orange-500/50' : 'bg-[#00f3ff]/20 text-[#00f3ff] border-[#00f3ff]/50';
+                    const borderLeft = isGh ? 'border-l-[#ff00f0]' : isAws ? 'border-l-orange-500' : 'border-l-[#00f3ff]';
+                    const safeSecret = encodeURIComponent(f.full_secret);
+                    const findingId = f.id || '';
+                    const triageStatus = f.triage_status || 'open';
+                    const isDismissed = triageStatus === 'false_positive' || triageStatus === 'test';
+
+                    // Severity badge
+                    const sevColors = {CRITICAL: 'bg-red-500/20 text-red-400 border-red-500/50', HIGH: 'bg-orange-500/20 text-orange-400 border-orange-500/50', MEDIUM: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50'};
+                    const sevBadge = `<span class="px-2 py-1 text-[10px] font-mono font-bold border rounded ${sevColors[f.severity] || sevColors.MEDIUM} uppercase tracking-widest">${f.severity || 'MEDIUM'}</span>`;
+
+                    // Triage status badge
+                    const triageBadges = {
+                        'false_positive': '<span class="px-2 py-1 text-[10px] font-mono font-bold rounded bg-gray-500/20 text-gray-400 border border-gray-500/30 uppercase tracking-widest">✕ False Positive</span>',
+                        'test': '<span class="px-2 py-1 text-[10px] font-mono font-bold rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase tracking-widest">🧪 Test</span>',
+                        'fix_later': '<span class="px-2 py-1 text-[10px] font-mono font-bold rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 uppercase tracking-widest">⏳ Fix Later</span>'
+                    };
+                    const triageBadge = triageBadges[triageStatus] || '';
+                    
+                    // Active / Inactive badge
+                    let activeBadge = '';
+                    if (f.is_active === 'active') {
+                        activeBadge = '<span class="px-2 py-1 text-[10px] font-mono font-bold rounded bg-red-500/20 text-red-400 border border-red-500/30 uppercase tracking-widest"><i class="fas fa-bolt mr-1"></i>Active</span>';
+                    } else if (f.is_active === 'inactive') {
+                        activeBadge = '<span class="px-2 py-1 text-[10px] font-mono font-bold rounded bg-green-500/20 text-green-400 border border-green-500/30 uppercase tracking-widest"><i class="fas fa-ban mr-1"></i>Inactive</span>';
+                    } else if (f.is_active === 'unknown') {
+                        activeBadge = '<span class="px-2 py-1 text-[10px] font-mono font-bold rounded bg-gray-500/20 text-gray-400 border border-gray-500/30 uppercase tracking-widest"><i class="fas fa-question mr-1"></i>Unknown</span>';
+                    }
+
+                    // Metadata
+                    let metadataHtml = '';
+                    if (f.metadata) {
+                        metadataHtml = `<div class="mt-3 px-3 py-2 bg-black/20 border border-white/5 rounded text-xs font-mono text-gray-300"><i class="fas fa-info-circle mr-2 text-[#00f3ff]"></i>${escapeHtml(f.metadata)}</div>`;
+                    }
+
+                    let occurrencesHtml = '<div class="space-y-2 mt-4 pt-4 border-t border-white/5">';
+                    if (f.occurrences && f.occurrences.length > 0) {
+                        const visibleOccurrences = f.occurrences.slice(0, 3);
+                        const hiddenOccurrences = f.occurrences.slice(3);
+                        const extraCount = hiddenOccurrences.length;
+                        const extraLocationsId = `extra-loc-${index}`;
+
+                        const renderOcc = (occ) => {
+                            const innerContent = `
+                                ${occ.file ? `<div><i class="fas fa-file-code mr-2 text-gray-400"></i>${escapeHtml(occ.file)}</div>` : ''}
+                                ${occ.line ? `<div><i class="fas fa-list-ol mr-2 text-gray-400"></i>${occ.line === 'history' ? 'History Match' : 'Line ' + occ.line}</div>` : ''}
+                                ${occ.repository ? `<div><i class="fab fa-github mr-2 text-gray-400"></i>${escapeHtml(occ.repository)}</div>` : ''}
+                            `;
+                            let githubUrl = '';
+                            if (resultData && resultData.target_type === 'github' && occ.repository && occ.file && occ.line && occ.line !== 'history') {
+                                let filePathInRepo = occ.file.substring(occ.repository.length + 1);
+                                githubUrl = `https://github.com/${targetStr}/${occ.repository}/blob/HEAD/${filePathInRepo}#L${occ.line}`;
+                            }
+
+                            if (githubUrl) {
+                                return `<a href="${githubUrl}" target="_blank" class="flex flex-wrap gap-4 text-xs font-mono text-gray-500 tracking-widest font-bold hover:text-[#00f3ff] transition-colors cursor-pointer border border-transparent hover:border-[#00f3ff]/30 p-2 -m-2 rounded">
+                                    ${innerContent}
+                                </a>`;
+                            } else {
+                                return `<div class="flex flex-wrap gap-4 text-xs font-mono text-gray-500 tracking-widest font-bold">
+                                    ${innerContent}
+                                </div>`;
+                            }
+                        };
+
+                        visibleOccurrences.forEach(occ => {
+                            occurrencesHtml += renderOcc(occ);
+                        });
+
+                        if (extraCount > 0) {
+                            occurrencesHtml += `<div id="${extraLocationsId}" class="hidden space-y-2 mt-2">`;
+                            hiddenOccurrences.forEach(occ => {
+                                occurrencesHtml += renderOcc(occ);
+                            });
+                            occurrencesHtml += `</div>
+                            <button onclick="toggleLocations('${extraLocationsId}', this, ${extraCount})" class="mt-3 text-xs font-mono text-[#00f3ff] font-bold cursor-pointer flex items-center gap-2 focus:outline-none hover:text-white transition-colors">
+                                <span>+ ${extraCount} more locations</span>
+                            </button>`;
+                        }
+                    }
+                    occurrencesHtml += '</div>';
+
+                    html += `
+                        <div id="finding-${findingId}" data-severity="${f.severity}" data-active="${f.is_active || 'unknown'}" data-dismissed="${isDismissed}" class="secret-card glass-panel border border-white/5 border-l-4 ${borderLeft} rounded-xl p-6 result-item opacity-0 transform translate-y-4 ${isDismissed ? 'black-haze' : ''}" style="${isDismissed ? 'filter: brightness(0.5) grayscale(0.5)' : ''}">
+                            <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    ${sevBadge}
+                                    ${activeBadge}
+                                    <span class="px-3 py-1.5 text-xs font-mono font-bold border rounded-md ${badgeColor} uppercase tracking-widest shadow-[0_0_10px_currentColor]">${escapeHtml(f.type)}</span>
+                                    ${f.total_count > 1 ? `<span class="text-[10px] uppercase tracking-widest font-bold text-gray-400 bg-black/40 px-2 py-1 rounded">×${f.total_count}</span>` : ''}
+                                    ${triageBadge}
+                                </div>
+                                <div class="flex gap-2 flex-wrap">
+                                    <button onclick="triageFinding('${findingId}', 'false_positive', this)" class="text-[10px] font-mono font-bold px-3 py-1.5 bg-white/5 hover:bg-red-500/20 rounded border border-white/10 hover:border-red-500/30 transition-colors text-gray-400 hover:text-red-400 uppercase tracking-widest" title="Mark as false positive"><i class="fas fa-times-circle mr-1"></i>FP</button>
+                                    <button onclick="triageFinding('${findingId}', 'test', this)" class="text-[10px] font-mono font-bold px-3 py-1.5 bg-white/5 hover:bg-blue-500/20 rounded border border-white/10 hover:border-blue-500/30 transition-colors text-gray-400 hover:text-blue-400 uppercase tracking-widest" title="Used in tests"><i class="fas fa-flask mr-1"></i>Test</button>
+                                    <button onclick="triageFinding('${findingId}', 'fix_later', this)" class="text-[10px] font-mono font-bold px-3 py-1.5 bg-white/5 hover:bg-yellow-500/20 rounded border border-white/10 hover:border-yellow-500/30 transition-colors text-gray-400 hover:text-yellow-400 uppercase tracking-widest" title="Fix later"><i class="fas fa-clock mr-1"></i>Later</button>
+                                    <button onclick="copySecret(this, '${safeSecret}')" class="text-[10px] font-mono font-bold px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded border border-white/10 transition-colors text-gray-300 hover:text-white uppercase tracking-widest"><i class="far fa-copy mr-1"></i>Copy</button>
+                                </div>
+                            </div>
+                            <div class="bg-black/60 p-5 rounded-lg border border-white/5 font-mono text-sm text-[#00f3ff] overflow-x-auto tracking-wider">${escapeHtml(f.preview || f.full_secret)}</div>
+                            ${metadataHtml}
+                            ${occurrencesHtml}
+                        </div>`;
+                });
+                findingsList.innerHTML = html;
+                gsap.to(".result-item", { opacity: 1, y: 0, duration: 0.8, stagger: 0.05, ease: "expo.out" });
+            }
+            setTimeout(() => { lenis.scrollTo('#resultsContainer', { offset: -100, duration: 1.5 }); }, 100);
+        }
+
+        // --- Triage function ---
+        window.triageFinding = async function(findingId, action, btn) {
+            if (!currentTaskId) { showToast('No active scan to triage.', true); return; }
+            try {
+                const res = await fetch('/triage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task_id: currentTaskId, finding_id: findingId, action: action })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    const card = document.getElementById(`finding-${findingId}`);
+                    if (action === 'false_positive' || action === 'test') {
+                        gsap.to(card, { filter: 'brightness(0.5) grayscale(0.5)', duration: 0.4, ease: 'power2.out' });
+                        card.classList.add('black-haze');
+                        card.setAttribute('data-dismissed', 'true');
+                    } else if (action === 'fix_later') {
+                        card.style.borderLeftColor = '#eab308';
+                    }
+                    const labels = { false_positive: 'False Positive', test: 'Test', fix_later: 'Fix Later' };
+                    showToast(`Marked as: ${labels[action]}`);
+                } else {
+                    showToast(data.error || 'Triage failed', true);
+                }
+            } catch(e) { showToast('Triage request failed', true); }
+        }
+
+        // --- Export function ---
+        window.exportResults = function(format) {
+            if (!currentTaskId) { showToast('No active scan to export.', true); return; }
+            window.open(`/export/${currentTaskId}?format=${format}`, '_blank');
+        }
+
+        window.copySecret = function (btn, secret) {
+            navigator.clipboard.writeText(decodeURIComponent(secret)).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<i class=\"fas fa-check\"></i> Copied`;
+                btn.classList.add('bg-[#00f3ff]/20', 'border-[#00f3ff]/50', 'text-[#00f3ff]');
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('bg-[#00f3ff]/20', 'border-[#00f3ff]/50', 'text-[#00f3ff]');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

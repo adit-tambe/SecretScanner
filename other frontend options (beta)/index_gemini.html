@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased bg-[#030303] text-slate-200">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecretScanner | Enterprise Credential Detection</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#030303',
+                            panel: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            cyan: '#00ffcc',
+                            purple: '#7000ff',
+                        }
+                    },
+                    backgroundImage: {
+                        'mesh': 'radial-gradient(at 40% 20%, rgba(112, 0, 255, 0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(0, 255, 204, 0.15) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(112, 0, 255, 0.1) 0px, transparent 50%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
+    
+    <style>
+        /* Base & Lenis Utilities */
+        html.lenis, html.lenis body { height: auto; width: 100vw; overflow-x: hidden; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-smooth iframe { pointer-events: none; }
+
+        ::selection { background: #00ffcc; color: #000; }
+        
+        /* Hide native cursor for custom cursor */
+        @media (pointer: fine) { body { cursor: none; } }
+
+        /* Input autofill fix */
+        input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus {
+            -webkit-text-fill-color: white;
+            -webkit-box-shadow: 0 0 0px 1000px #0a0a0a inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Custom Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #00ffcc;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ffcc;
+            margin-top: -5px;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+
+        /* Glitch Effect */
+        .glitch-wrapper { position: relative; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch::before {
+            left: 2px; text-shadow: -1px 0 #00ffcc; clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px; text-shadow: -1px 0 #7000ff; clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(4px, 9999px, 56px, 0); }
+            20% { clip: rect(62px, 9999px, 89px, 0); }
+            40% { clip: rect(10px, 9999px, 45px, 0); }
+            60% { clip: rect(85px, 9999px, 12px, 0); }
+            80% { clip: rect(32px, 9999px, 78px, 0); }
+            100% { clip: rect(98px, 9999px, 23px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            20% { clip: rect(12px, 9999px, 43px, 0); }
+            40% { clip: rect(89px, 9999px, 20px, 0); }
+            60% { clip: rect(34px, 9999px, 76px, 0); }
+            80% { clip: rect(2px, 9999px, 55px, 0); }
+            100% { clip: rect(45px, 9999px, 88px, 0); }
+        }
+    </style>
+</head>
+<body class="bg-brand-bg relative selection:bg-brand-cyan selection:text-black">
+
+    <div class="umbrella-cursor hidden md:block fixed top-0 left-0 pointer-events-none z-[10000]">
+        <div class="absolute flex items-center justify-center" style="transform: translate(-50%, -5px);">
+            <div class="w-[120px] h-[120px] bg-brand-cyan/15 rounded-full blur-xl absolute transition-transform duration-300 scale-100 umbrella-glow"></div>
+            <svg id="umbrella-svg" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" class="relative z-10 drop-shadow-[0_0_15px_#00ffcc] text-brand-cyan transition-all duration-300">
+                <path d="M21 12a9 9 0 0 0-18 0h18Z" fill="currentColor" />
+                <path d="M12 12v7a2 2 0 0 0 4 0" />
+                <circle cx="12" cy="2" r="1" fill="currentColor" />
+            </svg>
+        </div>
+    </div>
+
+    <canvas id="rain-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-[0] opacity-80 mix-blend-screen"></canvas>
+    
+    <div class="fixed inset-0 w-full h-full bg-mesh z-[-2] opacity-60 pointer-events-none"></div>
+    
+    <nav id="main-nav" class="fixed top-0 w-full p-6 z-50 pointer-events-none flex justify-between items-center opacity-0">
+        <div class="relative inline-block pointer-events-auto interactive-hover cursor-pointer">
+            <div class="absolute inset-0 bg-[#030303]/80 blur-[16px] rounded-full scale-150 z-0 pointer-events-none"></div>
+            <div class="text-xl font-bold font-sans tracking-tighter text-white relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Secret<span class="text-brand-cyan">Scanner</span></div>
+        </div>
+        
+        <div class="relative inline-block">
+            <div class="absolute inset-0 bg-[#030303]/80 blur-[16px] rounded-full scale-150 z-0 pointer-events-none"></div>
+            <div class="font-mono text-xs text-brand-cyan tracking-widest uppercase opacity-90 relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Status: Secure</div>
+        </div>
+    </nav>
+
+    <div class="fixed bottom-8 left-8 z-[100] flex flex-col gap-3 bg-black/60 backdrop-blur-xl border border-white/10 p-5 rounded-2xl opacity-40 hover:opacity-100 transition-opacity duration-300 pointer-events-auto shadow-[0_0_20px_rgba(0,0,0,0.5)] interactive-hover w-48">
+        <label for="rainSpeed" class="font-mono text-[10px] text-gray-400 tracking-widest uppercase flex justify-between items-center">
+            <span>Rain Speed</span>
+            <span id="speedVal" class="text-brand-cyan font-bold text-xs">1.0x</span>
+        </label>
+        <input type="range" id="rainSpeed" min="0" max="5" step="0.1" value="1" class="w-full">
+    </div>
+
+    <main id="smooth-wrapper" class="relative z-10">
+        <div id="smooth-content">
+
+            <section class="relative h-screen flex flex-col justify-center items-center px-4 overflow-hidden">
+                <div class="z-10 text-center flex flex-col items-center">
+                    
+                    <div class="overflow-hidden mb-2">
+                        <div class="hero-sub relative inline-block mb-4 opacity-0">
+                            <div class="absolute inset-0 bg-[#030303]/80 blur-[16px] rounded-full scale-150 z-0 pointer-events-none"></div>
+                            <p class="font-mono text-brand-cyan text-sm md:text-base tracking-[0.3em] uppercase relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                [ Initialization Protocol ]
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div id="hero-title-container" class="relative mb-6 opacity-0">
+                        <div class="absolute inset-0 bg-[#030303]/60 blur-[35px] rounded-[100px] scale-110 z-0 pointer-events-none"></div>
+                        <h1 class="hero-title relative z-10 text-6xl md:text-9xl font-black tracking-tighter leading-none uppercase glitch-wrapper" data-text="Exposed">
+                            <span class="glitch" data-text="Exposed">Exposed</span><br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Secrets</span>
+                        </h1>
+                    </div>
+                    
+                    <div class="hero-desc relative max-w-2xl mx-auto mb-10 opacity-0">
+                        <div class="absolute inset-0 bg-[#030303]/70 blur-[24px] rounded-full scale-125 z-0 pointer-events-none"></div>
+                        <p class="text-lg md:text-xl text-gray-300 font-sans relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-relaxed">
+                            Deep crawl repositories, profiles, and web domains for exposed API keys, database credentials, and cryptographic tokens.
+                        </p>
+                    </div>
+                    
+                    <div class="hero-btn relative opacity-0">
+                        <div class="absolute inset-0 bg-[#030303]/80 blur-[20px] rounded-full scale-[1.3] z-0 pointer-events-none"></div>
+                        <button id="scroll-to-app" class="group relative z-10 px-8 py-4 bg-transparent border border-brand-cyan text-brand-cyan font-mono text-sm tracking-widest uppercase overflow-hidden hover:text-black transition-colors duration-300 pointer-events-auto shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+                            <div class="absolute inset-0 bg-brand-cyan transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] z-[-1]"></div>
+                            Launch Scanner <i class="fas fa-arrow-down ml-2 animate-bounce"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative py-32 px-4 border-y border-brand-border bg-black/60 backdrop-blur-xl">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-2 lg:grid-cols-5 gap-8 text-center md:text-left">
+                        <div class="stat-card opacity-0 transform translate-y-10 col-span-2 lg:col-span-1 flex flex-col lg:items-start items-center">
+                            <h2 class="text-5xl md:text-6xl font-black text-brand-purple mb-2">$4.5M</h2>
+                            <p class="font-mono text-xs text-gray-400 uppercase tracking-widest">Avg Data Breach Cost</p>
+                        </div>
+                        <div class="stat-card opacity-0 transform translate-y-10 delay-100 flex flex-col lg:items-start items-center">
+                            <h2 class="text-5xl md:text-6xl font-black text-brand-cyan mb-2">10M+</h2>
+                            <p class="font-mono text-xs text-gray-400 uppercase tracking-widest">Secrets Leaked Annually</p>
+                        </div>
+                        <div class="stat-card opacity-0 transform translate-y-10 delay-200 flex flex-col lg:items-start items-center">
+                            <h2 class="text-5xl md:text-6xl font-black text-white mb-2">43%</h2>
+                            <p class="font-mono text-xs text-gray-400 uppercase tracking-widest">Involve Valid Credentials</p>
+                        </div>
+                        <div class="stat-card opacity-0 transform translate-y-10 delay-300 flex flex-col lg:items-start items-center">
+                            <h2 class="text-5xl md:text-6xl font-black text-brand-purple mb-2">208<span class="text-2xl text-gray-500">d</span></h2>
+                            <p class="font-mono text-xs text-gray-400 uppercase tracking-widest">Avg Time to Identify</p>
+                        </div>
+                        <div class="stat-card opacity-0 transform translate-y-10 delay-400 flex flex-col lg:items-start items-center col-span-2 lg:col-span-1">
+                            <h2 class="text-5xl md:text-6xl font-black text-brand-cyan mb-2">3x</h2>
+                            <p class="font-mono text-xs text-gray-400 uppercase tracking-widest">YoY Increase in Leaks</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="absolute bottom-4 right-4 md:right-8 font-mono text-[9px] text-gray-500/40 uppercase tracking-widest text-right">
+                    Sources: IBM Cost of a Data Breach 2023 | GitGuardian State of Secrets Sprawl 2024
+                </div>
+            </section>
+
+            <section id="app-section" class="py-32 px-4 relative min-h-screen flex flex-col items-center justify-center">
+                
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-cyan/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+                <div class="w-full max-w-4xl z-10 relative">
+                    
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="h-[1px] flex-1 bg-gradient-to-r from-transparent to-brand-cyan/50"></div>
+                        <div class="relative inline-flex items-center justify-center px-4 py-1">
+                            <div class="absolute inset-0 bg-[#030303]/90 blur-[14px] rounded-full scale-125 z-0 pointer-events-none"></div>
+                            <h2 class="font-mono text-xl text-brand-cyan tracking-widest uppercase relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Target Acquisition</h2>
+                        </div>
+                        <div class="h-[1px] flex-1 bg-gradient-to-l from-transparent to-brand-cyan/50"></div>
+                    </div>
+
+                    <div class="bg-brand-panel backdrop-blur-2xl border border-brand-border rounded-2xl p-8 md:p-12 shadow-2xl hover:border-brand-cyan/30 transition-colors">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block font-mono text-xs text-gray-400 uppercase tracking-wider mb-3">Target Vector (URL, Repo, User)</label>
+                                <input type="text" id="target" placeholder="octocat/Hello-World | google.com" class="w-full bg-black/50 border border-white/10 rounded-lg px-6 py-4 text-white font-mono placeholder-gray-600 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all interactive-hover pointer-events-auto">
+                            </div>
+
+                            <div>
+                                <label class="block font-mono text-xs text-gray-400 uppercase tracking-wider mb-3">Scan Profile</label>
+                                <div class="relative">
+                                    <select id="type" class="w-full bg-black/50 border border-white/10 rounded-lg px-6 py-4 text-white font-mono appearance-none focus:outline-none focus:border-brand-cyan transition-all cursor-pointer interactive-hover pointer-events-auto">
+                                        <option value="github">Single Repository</option>
+                                        <option value="github-user">User / Organization</option>
+                                        <option value="website">Web Domain</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-mono text-xs text-gray-400 uppercase tracking-wider mb-3 flex justify-between">
+                                    <span>GitHub Token</span>
+                                    <span class="text-brand-purple">[Optional]</span>
+                                </label>
+                                <input type="password" id="github_token" placeholder="ghp_..." class="w-full bg-black/50 border border-white/10 rounded-lg px-6 py-4 text-white font-mono placeholder-gray-600 focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all interactive-hover pointer-events-auto">
+                            </div>
+
+                            <div class="col-span-1 md:col-span-2 mt-4">
+                                <button id="scanBtn" class="w-full relative group overflow-hidden rounded-lg bg-white/5 backdrop-blur-md border border-brand-cyan/50 text-brand-cyan shadow-[0_0_15px_rgba(0,255,204,0.3)] font-sans font-bold text-lg py-5 tracking-wide transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] interactive-hover pointer-events-auto hover:bg-brand-cyan hover:border-brand-cyan hover:text-black hover:shadow-[0_0_30px_rgba(0,255,204,0.8)]">
+                                    <span class="relative z-10 flex items-center justify-center gap-3 transition-colors duration-300">
+                                        <i class="fas fa-fingerprint"></i> Initialize Deep Scan
+                                    </span>
+                                    <div class="absolute inset-0 bg-brand-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="loadingArea" class="hidden mt-12 text-center">
+                        <div class="inline-block relative">
+                            <div class="w-16 h-16 rounded-full border-2 border-brand-border border-t-brand-cyan animate-spin"></div>
+                            <div class="absolute inset-0 w-16 h-16 rounded-full border-2 border-transparent border-b-brand-purple animate-spin-reverse delay-150"></div>
+                        </div>
+                        <p id="loadingTitle" class="mt-6 font-sans text-xl font-bold text-white">Establishing Link...</p>
+                        <p id="loadingSub" class="mt-2 font-mono text-sm text-brand-cyan animate-pulse">Bypassing mainframe...</p>
+                    </div>
+
+                    <div id="resultsArea" class="hidden mt-12 space-y-6">
+                        </div>
+
+                </div>
+            </section>
+
+            <footer class="py-12 border-t border-brand-border text-center bg-black/40 backdrop-blur-lg relative z-10 pointer-events-auto">
+                <p class="font-mono text-xs text-gray-500 uppercase tracking-widest max-w-xl mx-auto leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    Built for security auditing. Do not scan targets without authorization.<br>
+                    Respects GitHub Rate Limits & Terms of Service.
+                </p>
+                <div class="mt-6 text-2xl text-brand-border hover:text-white transition-colors cursor-pointer inline-block interactive-hover">
+                    <i class="fab fa-github"></i>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <div id="toast" class="fixed bottom-8 right-8 bg-black/80 backdrop-blur-md border border-brand-cyan text-white px-6 py-4 rounded-lg font-mono text-sm transform translate-y-24 opacity-0 transition-all duration-300 z-50 shadow-[0_0_20px_rgba(0,255,204,0.2)]">
+        <i class="fas fa-check text-brand-cyan mr-2"></i> <span id="toastMsg">Copied to clipboard</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 1. Init Lenis Smooth Scroll ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // --- 2. Custom Umbrella Cursor Logic ---
+        const umbrellaCursor = document.querySelector('.umbrella-cursor');
+        const umbrellaGlow = document.querySelector('.umbrella-glow');
+        const umbrellaSvg = document.getElementById('umbrella-svg');
+        
+        let mouseX = -1000;
+        let mouseY = -1000;
+        
+        // Track mouse position specifically for the canvas
+        const targetMouse = { x: -1000, y: -1000 };
+
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const xSetUmbrella = gsap.quickSetter(umbrellaCursor, "x", "px");
+            const ySetUmbrella = gsap.quickSetter(umbrellaCursor, "y", "px");
+
+            window.addEventListener("mousemove", e => {
+                targetMouse.x = e.clientX;
+                targetMouse.y = e.clientY;
+                xSetUmbrella(e.clientX);
+                ySetUmbrella(e.clientY);
+            });
+
+            // Expand umbrella shield & turn umbrella white on hover over buttons
+            const interactables = document.querySelectorAll('button, a, input, select, .interactive-hover, .pointer-events-auto');
+            interactables.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    umbrellaGlow.classList.replace('scale-100', 'scale-150');
+                    umbrellaSvg.classList.replace('text-brand-cyan', 'text-white');
+                    umbrellaSvg.classList.replace('drop-shadow-[0_0_15px_#00ffcc]', 'drop-shadow-[0_0_20px_#ffffff]');
+                });
+                el.addEventListener('mouseleave', () => {
+                    umbrellaGlow.classList.replace('scale-150', 'scale-100');
+                    umbrellaSvg.classList.replace('text-white', 'text-brand-cyan');
+                    umbrellaSvg.classList.replace('drop-shadow-[0_0_20px_#ffffff]', 'drop-shadow-[0_0_15px_#00ffcc]');
+                });
+            });
+        }
+
+        // --- 3. Interactive Matrix Rain Canvas & Slider logic ---
+        const canvas = document.getElementById('rain-canvas');
+        const ctx = canvas.getContext('2d');
+        const rainSpeedSlider = document.getElementById('rainSpeed');
+        const speedValDisplay = document.getElementById('speedVal');
+        
+        let rainSpeedMultiplier = parseFloat(rainSpeedSlider.value);
+
+        // Update multiplier instantly when slider moves
+        rainSpeedSlider.addEventListener('input', (e) => {
+            rainSpeedMultiplier = parseFloat(e.target.value);
+            speedValDisplay.innerText = rainSpeedMultiplier.toFixed(1) + 'x';
+        });
+
+        let width, height;
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*<>/-_+=|\\'.split('');
+        const colors = ['#00ffcc', '#00ffcc', '#7000ff', '#ff00ff', '#00d2ff', '#ffffff'];
+        const particles = [];
+        // Adjust particle density based on screen width
+        const maxParticles = Math.min(Math.floor(window.innerWidth / 2.5), 800); 
+
+        // Initializing particles entirely off-screen above so the rain "falls in"
+        for(let i=0; i<maxParticles; i++) {
+            particles.push({
+                x: Math.random() * window.innerWidth,
+                y: (Math.random() * window.innerHeight * 1.5) - (window.innerHeight * 1.5), 
+                baseSpeed: 1.365 + Math.random() * 3.185, 
+                char: chars[Math.floor(Math.random()*chars.length)],
+                color: colors[Math.floor(Math.random()*colors.length)]
+            });
+        }
+
+        const umbrellaRadius = 70; // Original physics radius
+
+        function drawRain() {
+            // Draw semi-transparent black to create fading text trails
+            ctx.fillStyle = 'rgba(3, 3, 3, 0.18)'; 
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.font = '13px JetBrains Mono';
+            ctx.textAlign = 'center';
+
+            particles.forEach(p => {
+                // Apply the slider multiplier dynamically
+                p.y += (p.baseSpeed * rainSpeedMultiplier);
+
+                // Randomly change characters for the glitch effect
+                if(Math.random() < 0.03 && rainSpeedMultiplier > 0) {
+                    p.char = chars[Math.floor(Math.random()*chars.length)];
+                }
+
+                // Physics: Original working physics restored, shifted 29px down 
+                // to perfectly align with the new pointer tip position.
+                if(rainSpeedMultiplier > 0) {
+                    const pivotY = targetMouse.y + 29;
+                    const dx = p.x - targetMouse.x;
+                    const dy = p.y - (pivotY - 15); 
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+
+                    if (dist < umbrellaRadius && p.y < pivotY + 10) {
+                        const angle = Math.atan2(dy, dx);
+                        p.x = targetMouse.x + Math.cos(angle) * umbrellaRadius;
+                        p.y = (pivotY - 15) + Math.sin(angle) * umbrellaRadius;
+                    }
+                }
+
+                // Reset particle to top if it falls off screen
+                if(p.y > height) {
+                    p.y = -20;
+                    p.x = Math.random() * width;
+                    p.baseSpeed = 1.365 + Math.random() * 3.185;
+                }
+
+                ctx.fillStyle = p.color;
+                ctx.fillText(p.char, p.x, p.y);
+            });
+
+            requestAnimationFrame(drawRain);
+        }
+        drawRain();
+
+        // --- 4. GSAP Page Animations (Load Sequence) ---
+        const tl = gsap.timeline();
+        
+        // Dynamic loading sequence that drops UI elements into place as rain starts
+        tl.fromTo("#main-nav", 
+            { y: -50, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.2 }
+          )
+          .fromTo("#hero-title-container", 
+            { scale: 1.1, opacity: 0 }, 
+            { scale: 1, opacity: 1, duration: 1.5, ease: "expo.out" }, 
+            "-=0.8"
+          )
+          .fromTo(".hero-sub", 
+            { y: 20, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1, ease: "power4.out" }, 
+            "-=1.2"
+          )
+          .fromTo(".hero-desc", 
+            { y: 20, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, 
+            "-=0.8"
+          )
+          .fromTo(".hero-btn", 
+            { y: 20, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, 
+            "-=0.8"
+          );
+
+        document.getElementById('scroll-to-app').addEventListener('click', () => {
+            lenis.scrollTo('#app-section', { offset: -50 });
+        });
+
+        gsap.utils.toArray('.stat-card').forEach((card, i) => {
+            gsap.to(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+        });
+
+        // --- 5. Application Logic (API Polling) ---
+        let currentTaskId = null;
+        let pollInterval = null;
+
+        const scanBtn = document.getElementById('scanBtn');
+        const targetInput = document.getElementById('target');
+        const typeSelect = document.getElementById('type');
+        const tokenInput = document.getElementById('github_token');
+        
+        const loadingArea = document.getElementById('loadingArea');
+        const loadingTitle = document.getElementById('loadingTitle');
+        const loadingSub = document.getElementById('loadingSub');
+        const resultsArea = document.getElementById('resultsArea');
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+
+        const loadingTexts = [
+            "Cloning Repository...",
+            "Analyzing Syntax Trees...",
+            "Calculating Shannon Entropy...",
+            "Extracting Regex Patterns...",
+            "Correlating Findings..."
+        ];
+        let loadInterval;
+
+        function showToastMessage(msg, isError = false) {
+            toastMsg.innerText = msg;
+            toast.style.borderColor = isError ? '#ff4444' : '#00ffcc';
+            toast.querySelector('i').className = isError ? 'fas fa-times text-red-500 mr-2' : 'fas fa-check text-brand-cyan mr-2';
+            
+            gsap.to(toast, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(1.7)" });
+            setTimeout(() => {
+                gsap.to(toast, { y: 24, opacity: 0, duration: 0.4, ease: "power2.in" });
+            }, 3000);
+        }
+
+        window.copySecret = function(secret) {
+            navigator.clipboard.writeText(secret).then(() => showToastMessage("Secret copied to clipboard"));
+        };
+
+        function renderResults(data) {
+            resultsArea.innerHTML = '';
+            resultsArea.classList.remove('hidden');
+
+            let findings = Array.isArray(data) ? data : (data.findings || []);
+
+            if (findings.length === 0) {
+                resultsArea.innerHTML = `
+                    <div class="bg-brand-panel border border-brand-cyan/30 rounded-xl p-10 text-center backdrop-blur-sm">
+                        <i class="fas fa-shield-check text-4xl text-brand-cyan mb-4"></i>
+                        <h3 class="text-2xl font-sans font-bold text-white mb-2">Target Secure</h3>
+                        <p class="font-mono text-sm text-gray-400">No exposed secrets found. Good job.</p>
+                    </div>`;
+                gsap.from(resultsArea.firstElementChild, { y: 20, opacity: 0, duration: 0.5 });
+                return;
+            }
+
+            // Group findings by file
+            const grouped = {};
+            findings.forEach(f => {
+                const file = f.file || 'unknown';
+                if (!grouped[file]) grouped[file] = [];
+                grouped[file].push(f);
+            });
+
+            let html = `<h3 class="font-mono text-brand-purple tracking-widest uppercase text-sm mb-4">Threats Detected (${findings.length})</h3>`;
+            
+            Object.entries(grouped).forEach(([file, items], index) => {
+                html += `
+                <div class="result-card bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden shadow-lg mb-6 opacity-0 translate-y-4">
+                    <div class="bg-white/5 px-6 py-3 border-b border-white/10 flex items-center gap-3">
+                        <i class="far fa-file-code text-gray-500"></i>
+                        <span class="font-mono text-sm text-gray-300 truncate">${file}</span>
+                    </div>
+                    <div class="p-6 space-y-4">
+                `;
+
+                items.forEach(f => {
+                    const safeSecret = (f.full_secret || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    html += `
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black p-4 rounded-lg border border-red-500/20 relative overflow-hidden group">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="bg-red-500/20 text-red-400 font-mono text-xs px-2 py-1 rounded border border-red-500/30 uppercase tracking-wide">${f.type}</span>
+                                    ${f.line ? `<span class="font-mono text-xs text-gray-500">Line ${f.line}</span>` : ''}
+                                </div>
+                                <code class="font-mono text-sm text-gray-300 break-all">${f.preview || f.full_secret}</code>
+                            </div>
+                            <button onclick="copySecret('${safeSecret}')" class="shrink-0 w-10 h-10 rounded bg-white/5 hover:bg-brand-cyan hover:text-black border border-white/10 transition-colors flex items-center justify-center interactive-hover pointer-events-auto">
+                                <i class="far fa-copy"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            resultsArea.innerHTML = html;
+
+            // Stagger animation for result cards
+            gsap.to('.result-card', {
+                y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power3.out"
+            });
+        }
+
+        scanBtn.addEventListener('click', async () => {
+            const target = targetInput.value.trim();
+            const type = typeSelect.value;
+            const token = tokenInput.value.trim();
+
+            if (!target) {
+                showToastMessage("Please enter a target vector", true);
+                targetInput.focus();
+                return;
+            }
+
+            // UI Loading State
+            scanBtn.disabled = true;
+            gsap.to(scanBtn, { opacity: 0.5, duration: 0.3 });
+            resultsArea.classList.add('hidden');
+            loadingArea.classList.remove('hidden');
+            
+            let textIdx = 0;
+            loadingTitle.innerText = "Initializing Protocols...";
+            loadInterval = setInterval(() => {
+                loadingTitle.innerText = loadingTexts[textIdx];
+                textIdx = (textIdx + 1) % loadingTexts.length;
+            }, 2500);
+
+            if (pollInterval) clearInterval(pollInterval);
+
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ target, type, github_token: token })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error);
+                
+                currentTaskId = data.task_id;
+                pollInterval = setInterval(pollResult, 2000);
+                
+            } catch (err) {
+                endLoadingState();
+                showToastMessage(err.message, true);
+            }
+        });
+
+        async function pollResult() {
+            if (!currentTaskId) return;
+            try {
+                const resp = await fetch(`/result/${currentTaskId}`);
+                const data = await resp.json();
+                
+                if (data.status === 'ready') {
+                    endLoadingState();
+                    renderResults(data.result);
+                } else if (data.status === 'error') {
+                    endLoadingState();
+                    showToastMessage(`Scan Error: ${data.error}`, true);
+                }
+            } catch (err) {
+                console.error("Poll error:", err);
+            }
+        }
+
+        function endLoadingState() {
+            clearInterval(pollInterval);
+            clearInterval(loadInterval);
+            loadingArea.classList.add('hidden');
+            scanBtn.disabled = false;
+            gsap.to(scanBtn, { opacity: 1, duration: 0.3 });
+            currentTaskId = null;
+        }
+    </script>
+</body>
+</html>

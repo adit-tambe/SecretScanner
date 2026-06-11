@@ -1,0 +1,4170 @@
+[
+    {
+        "id": "1password_service_account_token",
+        "name": "1Password Service Account Token",
+        "provider": "1Password",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "adafruit_io_key",
+        "name": "Adafruit IO Key",
+        "provider": "Adafruit",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "adobe_client_secret",
+        "name": "Adobe Client Secret",
+        "provider": "Adobe",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "adobe_device_token",
+        "name": "Adobe Device Token",
+        "provider": "Adobe",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "adobe_pac_token",
+        "name": "Adobe PAC Token",
+        "provider": "Adobe",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "adobe_refresh_token",
+        "name": "Adobe Refresh Token",
+        "provider": "Adobe",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "adobe_service_token",
+        "name": "Adobe Service Token",
+        "provider": "Adobe",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "adobe_short_lived_access_token",
+        "name": "Adobe Short-Lived Access Token",
+        "provider": "Adobe",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "aikido_api_client_secret",
+        "name": "Aikido API Client Secret",
+        "provider": "Aikido",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "aikido_ci_scanning_token",
+        "name": "Aikido CI Scanning Token",
+        "provider": "Aikido",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "airtable_api_key",
+        "name": "Airtable API Key",
+        "provider": "Airtable",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "airtable_personal_access_token",
+        "name": "Airtable Personal Access Token",
+        "provider": "Airtable",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "aiven_auth_token",
+        "name": "Aiven Auth Token",
+        "provider": "Aiven",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "aiven_service_password",
+        "name": "Aiven Service Password",
+        "provider": "Aiven",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "alibaba_cloud_access_key_id",
+        "name": "Alibaba Cloud AccessKey ID",
+        "provider": "Alibaba",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "aws_access_key_id",
+        "name": "Amazon AWS Access Key ID",
+        "provider": "Amazon AWS",
+        "regex": "(?<![A-Za-z0-9])(AKIA[0-9A-Z]{16})(?![A-Za-z0-9])",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "aws_api_key",
+        "name": "Amazon AWS API Key ID",
+        "provider": "Amazon AWS",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "aws_secret_access_key",
+        "name": "Amazon AWS Session Token",
+        "provider": "Amazon AWS",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "anthropic_admin_api_key",
+        "name": "Anthropic Admin API Key",
+        "provider": "Anthropic",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "anthropic_api_key",
+        "name": "Anthropic API Key",
+        "provider": "Anthropic",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "anthropic_session_id",
+        "name": "Anthropic Session ID",
+        "provider": "Anthropic",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "apify_actor_run_api_token",
+        "name": "Apify Actor Run API Token",
+        "provider": "Apify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "apify_actor_run_proxy_password",
+        "name": "Apify Actor Run Proxy Password",
+        "provider": "Apify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "apify_api_token",
+        "name": "Apify API Token",
+        "provider": "Apify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "apify_integration_api_token",
+        "name": "Apify Integration API Token",
+        "provider": "Apify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "apify_proxy_password",
+        "name": "Apify Proxy Password",
+        "provider": "Apify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "apify_ui_token",
+        "name": "Apify UI Token",
+        "provider": "Apify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "apify_webhook_dispatch_api_token",
+        "name": "Apify Webhook Dispatch API Token",
+        "provider": "Apify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "asaas_api_token",
+        "name": "Asaas API Token",
+        "provider": "Asaas",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "asana_legacy_format_personal_access_token",
+        "name": "Asana Legacy Format Personal Access Token",
+        "provider": "Asana",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "asana_personal_access_token",
+        "name": "Asana Personal Access Token",
+        "provider": "Asana",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "atlassian_api_token",
+        "name": "Atlassian API Token",
+        "provider": "Atlassian",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "atlassian_jwt",
+        "name": "Atlassian JSON Web Token",
+        "provider": "Atlassian",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "authress_service_client_access_key",
+        "name": "Authress Service Client Access Key",
+        "provider": "Authress",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_active_directory_application_secret",
+        "name": "Azure Active Directory Application Secret",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_ai_services_key",
+        "name": "Azure AI Services Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_anomaly_detector_ee_key",
+        "name": "Azure Anomaly Detector EE Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_anomaly_detector_key",
+        "name": "Azure Anomaly Detector Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_apim_direct_management_key",
+        "name": "Azure Apim Direct Management Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_apim_gateway_key",
+        "name": "Azure Apim Gateway Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_apim_repository_key",
+        "name": "Azure Apim Repository Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_apim_subscription_key",
+        "name": "Azure Apim Subscription Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_app_configuration_connection_string",
+        "name": "Azure App Configuration Connection String",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_app_configuration_key",
+        "name": "Azure App Configuration Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_batch_key_identifiable",
+        "name": "Azure Batch Key Identifiable",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_cache_for_redis_access_key",
+        "name": "Azure Cache for Redis Access Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_cognitive_services_key",
+        "name": "Azure Cognitive Services Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_communication_services_connection_string",
+        "name": "Azure Communication Services Connection String",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_communication_services_key",
+        "name": "Azure Communication Services Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_computer_vision_key",
+        "name": "Azure Computer Vision Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_container_registry_key_identifiable",
+        "name": "Azure Registry Key Identifiable",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_content_moderator_key",
+        "name": "Azure Content Moderator Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_content_safety_key",
+        "name": "Azure Content Safety Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_cosmosdb_key_identifiable",
+        "name": "Azure Cosmosdb Key Identifiable",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_custom_vision_prediction_key",
+        "name": "Azure Custom Vision Prediction Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_custom_vision_training_key",
+        "name": "Azure Custom Vision Training Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_devops_personal_access_token",
+        "name": "Azure DevOps Personal Access Token",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_event_grid_key_identifiable",
+        "name": "Azure Event Grid Key Identifiable",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_event_hub_key_identifiable",
+        "name": "Azure Event Hub Key Identifiable",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_face_key",
+        "name": "Azure Face Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_fluid_relay_key",
+        "name": "Azure Fluid Relay Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_form_recognizer_key",
+        "name": "Azure Form Recognizer Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_function_key",
+        "name": "Azure Function Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_health_decision_support_key",
+        "name": "Azure Health Decision Support Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_health_insights_key",
+        "name": "Azure Health Insights Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_immersive_reader_key",
+        "name": "Azure Immersive Reader Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_internal_all_in_one_key",
+        "name": "Azure Internal All In One Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_iot_device_connection_string",
+        "name": "Azure IoT Device Connection String",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_iot_device_key",
+        "name": "Azure IoT Device Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_iot_device_provisioning_key",
+        "name": "Azure IoT Device Provisioning Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_iot_hub_connection_string",
+        "name": "Azure IoT Hub Connection String",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_iot_hub_key",
+        "name": "Azure IoT Hub Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_iot_provisioning_connection_string",
+        "name": "Azure IoT Provisioning Connection String",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_knowledge_key",
+        "name": "Azure Knowledge Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_logic_apps_url",
+        "name": "Azure Logic Apps URL",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_luis_authoring_key",
+        "name": "Azure Luis Authoring Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_luis_key",
+        "name": "Azure Luis Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_management_certificate",
+        "name": "Microsoft Azure Service Management Certificate",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_maps_key",
+        "name": "Azure Maps Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_metrics_advisor_key",
+        "name": "Azure Metrics Advisor Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_mixed_reality_key",
+        "name": "Azure Mixed Reality Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_ml_inference_identifiable_key",
+        "name": "Azure ML Inference Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_ml_internal_service_principal_identifiable_key",
+        "name": "Azure ML Internal Service Principal Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_ml_web_service_classic_identifiable_key",
+        "name": "Azure ML Studio (classic) Web Service Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_openai_key",
+        "name": "Azure OpenAI Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_personalizer_key",
+        "name": "Azure Personalizer Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_qna_maker_key",
+        "name": "Azure QnA Maker Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_qna_maker_v2_key",
+        "name": "Azure QnA Maker V2 Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_quantum_key",
+        "name": "Azure Quantum Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_relay_key_identifiable",
+        "name": "Azure Relay Key Identifiable",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_sas_token",
+        "name": "Azure SAS Token",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_search_admin_key",
+        "name": "Azure Search Admin Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_search_query_key",
+        "name": "Azure Search Query Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_service_bus_identifiable",
+        "name": "Azure Service Bus Key Identifiable",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_signalr_connection_string",
+        "name": "Azure SignalR Connection String",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_signalr_key",
+        "name": "Azure SignalR Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_speech_services_key",
+        "name": "Azure Speech Services Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_speech_translation_key",
+        "name": "Azure Speech Translation Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_sql_internal_default_cloudsa_key",
+        "name": "Azure SQL Internal Default CloudSA Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_sql_password",
+        "name": "Azure SQL password",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_storage_account_key",
+        "name": "Azure Storage Account Access Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_text_analytics_key",
+        "name": "Azure Text Analytics Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_text_translation_key",
+        "name": "Azure Text Translation Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "azure_video_intelligence_key",
+        "name": "Azure Video Intelligence Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_web_app_bot_key",
+        "name": "Microsoft Azure Web App Bot Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_web_pub_sub_connection_string",
+        "name": "Azure Web Pub Sub Connection String",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "azure_web_pub_sub_key",
+        "name": "Azure Web Pub Sub Key",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "microsoft_azure_entra_id_token",
+        "name": "Microsoft Azure Entra ID Token",
+        "provider": "Azure",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "baiduai_api_key",
+        "name": "Baidu AI API Key",
+        "provider": "Baidu",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "baiducloud_api_accesskey",
+        "name": "Baidu Cloud API Access Key",
+        "provider": "Baidu",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "beamer_api_key",
+        "name": "Beamer API Key",
+        "provider": "Beamer",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "bitbucket_server_personal_access_token",
+        "name": "Bitbucket Server Personal Access Token",
+        "provider": "Bitbucket",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "bitrise_personal_access_token",
+        "name": "Bitrise Personal Access Token",
+        "provider": "Bitrise",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "bitrise_workspace_api_token",
+        "name": "Bitrise Workspace API Token",
+        "provider": "Bitrise",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "block_protocol_api_key",
+        "name": "Block Protocol API Key",
+        "provider": "Block Protocol",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sendinblue_api_key",
+        "name": "Sendinblue API Key",
+        "provider": "Brevo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sendinblue_smtp_key",
+        "name": "Sendinblue SMTP Key",
+        "provider": "Brevo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_agent_access_token",
+        "name": "Buildkite Agent Access Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_agent_job_token",
+        "name": "Buildkite Agent Job Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_agent_registration_token",
+        "name": "Buildkite Agent Registration Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_cluster_queue_token",
+        "name": "Buildkite Cluster Queue Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_cluster_token",
+        "name": "Buildkite Cluster Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_packages_registry_token",
+        "name": "Buildkite Packages Registry Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_packages_temporary_token",
+        "name": "Buildkite Packages Temporary Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_portal_secret",
+        "name": "Buildkite Portal Secret",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_portal_token",
+        "name": "Buildkite Portal Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "buildkite_user_access_token",
+        "name": "Buildkite User Access Token",
+        "provider": "Buildkite",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "cds_canada_notify_api_key",
+        "name": "Canadian Digital Service Notify API Key",
+        "provider": "Canadian Digital Service",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "canva_app_secret",
+        "name": "Canva App Secret",
+        "provider": "Canva",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "canva_connect_api_secret",
+        "name": "Canva Connect API Secret",
+        "provider": "Canva",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "canva_secret",
+        "name": "Canva Secret",
+        "provider": "Canva",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "cashfree_api_key",
+        "name": "Cashfree API Key",
+        "provider": "Cashfree",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "cfxre_server_key",
+        "name": "Cfx.re Server Key",
+        "provider": "Cfx.re",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "checkout_production_secret_key",
+        "name": "Checkout.com Production Secret Key",
+        "provider": "Checkout.com",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "checkout_test_secret_key",
+        "name": "Checkout.com Test Secret Key",
+        "provider": "Checkout.com",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "chief_tools_token",
+        "name": "Chief Tools Token",
+        "provider": "Chief Tools",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "circleci_bot_access_token",
+        "name": "CircleCI Bot API Token",
+        "provider": "CircleCI",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "circleci_personal_access_token",
+        "name": "CircleCI Personal Access Token",
+        "provider": "CircleCI",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "circleci_project_access_token",
+        "name": "CircleCI Project Access Token",
+        "provider": "CircleCI",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "circleci_release_integration_token",
+        "name": "CircleCI Release API Token",
+        "provider": "CircleCI",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "clojars_deploy_token",
+        "name": "Clojars Deploy Token",
+        "provider": "Clojars",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "cloudflare_account_api_token",
+        "name": "Cloudflare Account API Token",
+        "provider": "Cloudflare",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "cloudflare_global_user_api_key",
+        "name": "Cloudflare Global User API Key",
+        "provider": "Cloudflare",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "cloudflare_user_api_token",
+        "name": "Cloudflare User API Token",
+        "provider": "Cloudflare",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "ccdb_api_key",
+        "name": "CockroachDB Cloud API Key",
+        "provider": "Cockroach Labs",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "cohere_api_key",
+        "name": "Cohere API Key",
+        "provider": "Cohere",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "contentful_personal_access_token",
+        "name": "Contentful Personal Access Token",
+        "provider": "Contentful",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "contentful_web_token",
+        "name": "Contentful Web Token",
+        "provider": "Contentful",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "contributed_systems_credentials",
+        "name": "Contributed Systems Credentials",
+        "provider": "Contributed Systems",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "coveo_access_token",
+        "name": "Coveo Access Token",
+        "provider": "Coveo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "coveo_api_key",
+        "name": "Coveo API Key",
+        "provider": "Coveo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "cratesio_api_token",
+        "name": "Crates.io API Token",
+        "provider": "crates.io",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databento_api_key",
+        "name": "Databento API Key",
+        "provider": "Databento",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "databricks_access_token",
+        "name": "Databricks API Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "databricks_account_session_token",
+        "name": "Databricks Account Session Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_federated_account_session_token",
+        "name": "Databricks Federated Account Session Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_oauth_code",
+        "name": "Databricks OAuth Code",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_oauth_refresh_token",
+        "name": "Databricks OAuth Refresh Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_oauth_secret_token",
+        "name": "Databricks OAuth Secret Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_oauth_single_use_refresh_token_child",
+        "name": "Databricks OAuth Single Use Refresh Token Child",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_oauth_single_use_refresh_token_parent",
+        "name": "Databricks OAuth Single Use Refresh Token Parent",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_scoped_api_token",
+        "name": "Databricks Scoped API Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_scoped_internal_token",
+        "name": "Databricks Scoped Internal Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_token",
+        "name": "Databricks Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "databricks_workspace_session_token",
+        "name": "Databricks Workspace Session Token",
+        "provider": "Databricks",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "datadog_api_key",
+        "name": "Datadog API Key",
+        "provider": "Datadog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "datadog_app_key",
+        "name": "Datadog Application Key",
+        "provider": "Datadog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "datadog_rcm",
+        "name": "Datadog RCM",
+        "provider": "Datadog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "datastax_astracs_token",
+        "name": "Datastax AstraCS Tokens",
+        "provider": "Datastax",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "deepseek_api_key",
+        "name": "DeepSeek API Key",
+        "provider": "DeepSeek",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "defined_networking_nebula_api_key",
+        "name": "Defined Networking Managed Nebula API Key",
+        "provider": "Defined Networking",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "devcycle_client_api_key",
+        "name": "DevCycle Client API Key",
+        "provider": "DevCycle",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "devcycle_mobile_api_key",
+        "name": "DevCycle Mobile API Key",
+        "provider": "DevCycle",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "devcycle_server_api_key",
+        "name": "DevCycle Server API Key",
+        "provider": "DevCycle",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "digitalocean_oauth_token",
+        "name": "DigitalOcean OAuth Token",
+        "provider": "DigitalOcean",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "digitalocean_personal_access_token",
+        "name": "DigitalOcean Personal Access Token",
+        "provider": "DigitalOcean",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "digitalocean_refresh_token",
+        "name": "DigitalOcean Refresh Token",
+        "provider": "DigitalOcean",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "digitalocean_system_token",
+        "name": "DigitalOcean System Token",
+        "provider": "DigitalOcean",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "discord_bot_token",
+        "name": "Discord Bot Token",
+        "provider": "Discord",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "docker_organization_access_token",
+        "name": "Docker Organization Access Token",
+        "provider": "Docker",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "docker_personal_access_token",
+        "name": "Docker Personal Access Token",
+        "provider": "Docker",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "docker_swarm_join_token",
+        "name": "Docker Swarm Join Token",
+        "provider": "Docker",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "docker_swarm_unlock_key",
+        "name": "Docker Swarm Unlock Key",
+        "provider": "Docker",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "doppler_audit_token",
+        "name": "Doppler Audit Token",
+        "provider": "Doppler",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "doppler_cli_token",
+        "name": "Doppler CLI Token",
+        "provider": "Doppler",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "doppler_personal_token",
+        "name": "Doppler Personal Token",
+        "provider": "Doppler",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "doppler_scim_token",
+        "name": "Doppler SCIM Token",
+        "provider": "Doppler",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "doppler_service_account_token",
+        "name": "Doppler Service Account Token",
+        "provider": "Doppler",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "doppler_service_token",
+        "name": "Doppler Service Token",
+        "provider": "Doppler",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "dropbox_access_token",
+        "name": "Dropbox Access Token",
+        "provider": "Dropbox",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "dropbox_short_lived_access_token",
+        "name": "Dropbox Short-Lived Access Token",
+        "provider": "Dropbox",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "duffel_live_access_token",
+        "name": "Duffel Live Access Token",
+        "provider": "Duffel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "duffel_test_access_token",
+        "name": "Duffel Test Access Token",
+        "provider": "Duffel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "dynatrace_api_token",
+        "name": "Dynatrace API Token",
+        "provider": "Dynatrace",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "dynatrace_internal_token",
+        "name": "Dynatrace Internal Token",
+        "provider": "Dynatrace",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "easypost_production_api_key",
+        "name": "EasyPost Production API Key",
+        "provider": "EasyPost",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "easypost_test_api_key",
+        "name": "EasyPost Test API Key",
+        "provider": "EasyPost",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "ebay_production_client_id",
+        "name": "eBay Production Client ID (App ID)",
+        "provider": "eBay",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "ebay_sandbox_client_id",
+        "name": "eBay Sandbox Client ID (App ID)",
+        "provider": "eBay",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "elastic_cloud_api_key",
+        "name": "Elastic Cloud API Key",
+        "provider": "Elastic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "elastic_stack_api_key",
+        "name": "Elastic Stack API Key",
+        "provider": "Elastic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "facebook_access_token",
+        "name": "Facebook Access Token",
+        "provider": "Facebook",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "fastly_api_token",
+        "name": "Fastly API Token",
+        "provider": "Fastly",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "fieldguide_api_token",
+        "name": "Fieldguide API Token",
+        "provider": "Fieldguide",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "figma_pat",
+        "name": "Figma Personal Access Token",
+        "provider": "Figma",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "figma_scim_token",
+        "name": "Figma SCIM API Token",
+        "provider": "Figma",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "finicity_app_key",
+        "name": "Finicity App Key",
+        "provider": "Finicity",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "firebase_cloud_messaging_server_key",
+        "name": "Firebase Cloud Messaging Server Key",
+        "provider": "Firebase",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "flickr_api_key",
+        "name": "Flickr API Key",
+        "provider": "Flickr",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "flutterwave_live_api_secret_key",
+        "name": "Flutterwave Live API Secret Key",
+        "provider": "Flutterwave",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "flutterwave_test_api_secret_key",
+        "name": "Flutterwave Test API Secret Key",
+        "provider": "Flutterwave",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "frameio_developer_token",
+        "name": "Frame.io Developer Token",
+        "provider": "Frame.io",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "frameio_jwt",
+        "name": "Frame.io JSON Web Token",
+        "provider": "Frame.io",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "fullstory_api_key",
+        "name": "FullStory API Key",
+        "provider": "FullStory",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "github_app_installation_access_token",
+        "name": "GitHub App Installation Access Token",
+        "provider": "GitHub",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "github_oauth_access_token",
+        "name": "GitHub OAuth Access Token",
+        "provider": "GitHub",
+        "regex": "(?i)\\b(gho_[a-zA-Z0-9]{36})\\b",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "github_personal_access_token",
+        "name": "GitHub Personal Access Token",
+        "provider": "GitHub",
+        "regex": "(?i)\\b(ghp_[a-zA-Z0-9]{36})\\b",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "github_refresh_token",
+        "name": "GitHub Refresh Token",
+        "provider": "GitHub",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "github_ssh_private_key",
+        "name": "GitHub SSH Private Key",
+        "provider": "GitHub",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "github_test_token",
+        "name": "GitHub Test Token",
+        "provider": "GitHub",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_access_token",
+        "name": "GitLab Access Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "gitlab_ci_build_token",
+        "name": "GitLab CI/CD Job Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_deploy_token",
+        "name": "GitLab Deploy Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_feature_flag_client_token",
+        "name": "GitLab Feature Flag Client Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_feed_token_v2",
+        "name": "GitLab Feed Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_incoming_email_token",
+        "name": "GitLab Incoming Mail Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_kubernetes_agent_token",
+        "name": "GitLab Agent for Kubernetes Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_oauth_app_secret",
+        "name": "GitLab OAuth Application Secret",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_pipeline_trigger_token",
+        "name": "GitLab Pipeline Trigger Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_runner_auth_token",
+        "name": "GitLab Runner Authentication Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_runner_registration_token",
+        "name": "GitLab Runner Registration Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gitlab_scim_oauth_token",
+        "name": "GitLab SCIM Token",
+        "provider": "GitLab",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "gocardless_live_access_token",
+        "name": "GoCardless Live Access Token",
+        "provider": "GoCardless",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "gocardless_sandbox_access_token",
+        "name": "GoCardless Sandbox Access Token",
+        "provider": "GoCardless",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "google_api_key",
+        "name": "Google API Key",
+        "provider": "Google",
+        "regex": "(?<![A-Za-z0-9_])(AIza[0-9A-Za-z-_]{35})(?![A-Za-z0-9_])",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "google_cloud_service_account_credentials",
+        "name": "Google Cloud Service Account Credentials",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "google_cloud_storage_access_key_secret",
+        "name": "Google Cloud Storage Service Account Access Key ID",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "google_cloud_storage_access_key_secret",
+        "name": "Google Cloud Storage User Access Key ID",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "google_gcp_api_key_bound_service_account",
+        "name": "GCP API Key Bound to a Service Account",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "google_gemini_api_key",
+        "name": "Google Gemini API Key",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "google_oauth_access_token",
+        "name": "Google OAuth Access Token",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "google_oauth_client_id",
+        "name": "Google OAuth Client ID",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "google_oauth_refresh_token",
+        "name": "Google OAuth Refresh Token",
+        "provider": "Google",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "grafana_cloud_api_key",
+        "name": "Grafana Cloud API Key",
+        "provider": "Grafana",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "grafana_cloud_api_token",
+        "name": "Grafana Cloud API Token",
+        "provider": "Grafana",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "grafana_project_api_key",
+        "name": "Grafana Project API Key",
+        "provider": "Grafana",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "grafana_project_service_account_token",
+        "name": "Grafana Project Service Account Token",
+        "provider": "Grafana",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "groq_api_key",
+        "name": "Groq API Key",
+        "provider": "Groq",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "guardsquare_appsweep_api_key",
+        "name": "GuardSquare AppSweep API Key",
+        "provider": "GuardSquare",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "guardsquare_cli_access_token",
+        "name": "GuardSquare CLI Access Token",
+        "provider": "GuardSquare",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "guardsquare_maven_token",
+        "name": "GuardSquare Maven Token",
+        "provider": "GuardSquare",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hackclub_ai_api_key",
+        "name": "Hack Club AI Key",
+        "provider": "Hack Club",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hashicorp_vault_batch_token",
+        "name": "HashiCorp Vault Batch Token",
+        "provider": "HashiCorp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hashicorp_vault_root_service_token",
+        "name": "HashiCorp Vault Root Service Token",
+        "provider": "HashiCorp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hashicorp_vault_service_token",
+        "name": "HashiCorp Vault Service Token",
+        "provider": "HashiCorp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "terraform_api_token",
+        "name": "Terraform Cloud / Enterprise API Token",
+        "provider": "HashiCorp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "hcaptcha_siteverify_secret",
+        "name": "hCaptcha Siteverify Secret",
+        "provider": "hCaptcha",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "heroku_platform_api_oauth2_token",
+        "name": "Heroku Platform API OAuth2 Token",
+        "provider": "Heroku",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "heroku_postgres_connection_url",
+        "name": "Heroku Postgres Connection URL",
+        "provider": "Heroku",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "highnote_rk_live_key",
+        "name": "Highnote RK Live Key",
+        "provider": "Highnote",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "highnote_rk_test_key",
+        "name": "Highnote RK Test Key",
+        "provider": "Highnote",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "highnote_sk_live_key",
+        "name": "Highnote SK Live Key",
+        "provider": "Highnote",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "highnote_sk_test_key",
+        "name": "Highnote SK Test Key",
+        "provider": "Highnote",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "hop_bearer",
+        "name": "HOP Bearer",
+        "provider": "HOP",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hop_pat",
+        "name": "HOP PAT",
+        "provider": "HOP",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hop_ptk",
+        "name": "HOP PTK",
+        "provider": "HOP",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hubspot_api_key",
+        "name": "Hubspot API Key",
+        "provider": "Hubspot",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hubspot_personal_access_key",
+        "name": "Hubspot Personal Access Key",
+        "provider": "Hubspot",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hubspot_private_apps_user_token",
+        "name": "Hubspot Private Apps User Token",
+        "provider": "Hubspot",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hubspot_smtp_credential",
+        "name": "Hubspot SMTP Credential",
+        "provider": "Hubspot",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hf_org_api_key",
+        "name": "Hugging Face Organization API Token",
+        "provider": "Hugging Face",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "hf_user_access_token",
+        "name": "Hugging Face User Access Token",
+        "provider": "Hugging Face",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "ibm_cloud_iam_key",
+        "name": "IBM Cloud IAM Key",
+        "provider": "IBM",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "intercom_access_token",
+        "name": "Intercom Access Token",
+        "provider": "Intercom",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "ionic_personal_access_token",
+        "name": "Ionic Personal Access Token",
+        "provider": "Ionic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "ionic_refresh_token",
+        "name": "Ionic Refresh Token",
+        "provider": "Ionic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "iterative_dvc_studio_access_token",
+        "name": "DVC Studio Access Token",
+        "provider": "Iterative",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "jfrog_platform_access_token",
+        "name": "JFrog Platform Access Token",
+        "provider": "JFrog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "jfrog_platform_api_key",
+        "name": "JFrog Platform API Key",
+        "provider": "JFrog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "jfrog_platform_reference_token",
+        "name": "JFrog Platform Reference Token",
+        "provider": "JFrog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "langchain_api_personal_key",
+        "name": "LangSmith Personal Access Token",
+        "provider": "Langchain",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "langchain_api_server_key",
+        "name": "LangSmith Service Key",
+        "provider": "Langchain",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "langsmith_license_key",
+        "name": "LangSmith License Key",
+        "provider": "Langchain",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "langsmith_scim_bearer_token",
+        "name": "LangSmith SCIM Bearer Token",
+        "provider": "Langchain",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "lark_apaas_client_secret",
+        "name": "Lark APaaS Client Secret",
+        "provider": "Lark",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "lark_app_secret",
+        "name": "Lark Application Secret",
+        "provider": "Lark",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "lark_mcp_grant_token",
+        "name": "Lark MCP Grant Token",
+        "provider": "Lark",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "lark_meego_plugin_secret",
+        "name": "Lark Meego Plugin Secret",
+        "provider": "Lark",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "lark_user_session",
+        "name": "Lark User Session",
+        "provider": "Lark",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "launchdarkly_access_token",
+        "name": "LaunchDarkly API Token",
+        "provider": "LaunchDarkly",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "lichess_oauth_access_token",
+        "name": "Lichess OAuth Access Token",
+        "provider": "Lichess",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "lichess_personal_access_token",
+        "name": "Lichess Personal Access Token",
+        "provider": "Lichess",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "lightspeed_xs_pat",
+        "name": "Lightspeed Personal Access Token",
+        "provider": "Lightspeed",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "limbar_token",
+        "name": "Limbar Token",
+        "provider": "Limbar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "linear_api_key",
+        "name": "Linear API Key",
+        "provider": "Linear",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "linear_oauth_access_token",
+        "name": "Linear OAuth Access Token",
+        "provider": "Linear",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "linkedin_client_secret",
+        "name": "LinkedIn Client Secret",
+        "provider": "LinkedIn",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "lob_live_api_key",
+        "name": "Lob Live API Key",
+        "provider": "Lob",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "lob_test_api_key",
+        "name": "Lob Test API Key",
+        "provider": "Lob",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "localstack_api_key",
+        "name": "Localstack API Key",
+        "provider": "Localstack",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "logicmonitor_bearer_token",
+        "name": "LogicMonitor Bearer Token",
+        "provider": "LogicMonitor",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "logicmonitor_lmv1_access_key",
+        "name": "LogicMonitor LMv1 Access Key",
+        "provider": "LogicMonitor",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "amazon_oauth_client_id",
+        "name": "Login with Amazon OAuth Client ID",
+        "provider": "Login with Amazon",
+        "regex": "",
+        "severity": "CRITICAL",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mailchimp_api_key",
+        "name": "Mailchimp API Key",
+        "provider": "Mailchimp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mandrill_api_key",
+        "name": "Mandrill API Key",
+        "provider": "Mailchimp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mailersend_api_token",
+        "name": "Mailersend API Token",
+        "provider": "Mailersend",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mailersend_smtp_password",
+        "name": "Mailersend SMTP Password",
+        "provider": "Mailersend",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mailersend_smtp_username",
+        "name": "Mailersend SMTP Username",
+        "provider": "Mailersend",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mailgun_api_key",
+        "name": "Mailgun API Key",
+        "provider": "Mailgun",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mailgun_smtp_credential",
+        "name": "Mailgun SMTP Credential",
+        "provider": "Mailgun",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mapbox_secret_access_token",
+        "name": "Mapbox Secret Access Token",
+        "provider": "Mapbox",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "maxmind_license_key",
+        "name": "MaxMind License Key",
+        "provider": "MaxMind",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "meraki_api_key",
+        "name": "Meraki Dashboard API Key",
+        "provider": "Meraki",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mercury_non_production_api_token",
+        "name": "Mercury Non-Production API Token",
+        "provider": "Mercury",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mercury_production_api_token",
+        "name": "Mercury Production API Token",
+        "provider": "Mercury",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mergify_application_key",
+        "name": "Mergify Application Key",
+        "provider": "Mergify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "messagebird_api_key",
+        "name": "MessageBird API Key",
+        "provider": "MessageBird",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "power_automate_webhook_sas",
+        "name": "Power Automate Webhook SAS",
+        "provider": "Microsoft",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "midtrans_production_server_key",
+        "name": "Midtrans Production Server Key",
+        "provider": "Midtrans",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "midtrans_sandbox_server_key",
+        "name": "Midtrans Sandbox Server Key",
+        "provider": "Midtrans",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mistral_ai_api_key",
+        "name": "Mistral AI API Key",
+        "provider": "Mistral AI",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "mongodb_atlas_db_uri_with_credentials",
+        "name": "MongoDB Atlas Database URI with credentials",
+        "provider": "MongoDB",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mongodb_atlas_service_account_secret",
+        "name": "MongoDB Atlas Service Account Secret",
+        "provider": "MongoDB",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_gov_access_key",
+        "name": "Naver Cloud Gov Access Key ID",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_gov_access_key_secret",
+        "name": "Naver Cloud Gov Secret Key",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_gov_sts",
+        "name": "Naver Cloud Gov Secure Token Service",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_gov_sts_secret",
+        "name": "Naver Cloud Gov Secure Token Service Secret",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_pub_access_key",
+        "name": "Naver Cloud Access Key ID",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_pub_access_key_secret",
+        "name": "Naver Cloud Secret Key",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_pub_sts",
+        "name": "Naver Cloud Secure Token Service",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "navercloud_pub_sts_secret",
+        "name": "Naver Cloud Secure Token Service Secret",
+        "provider": "Naver Cloud",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "neon_api_key",
+        "name": "Neon API Key",
+        "provider": "Neon",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "neon_connection_uri",
+        "name": "Neon Connection URI",
+        "provider": "Neon",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "netflix_netkey",
+        "name": "Netflix NetKey",
+        "provider": "Netflix",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "new_relic_insights_query_key",
+        "name": "New Relic Insights Query Key",
+        "provider": "New Relic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "new_relic_license_key",
+        "name": "New Relic License Key",
+        "provider": "New Relic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "new_relic_personal_api_key",
+        "name": "New Relic Personal API Key",
+        "provider": "New Relic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "new_relic_rest_api_key",
+        "name": "New Relic REST API Key",
+        "provider": "New Relic",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "notion_api_token",
+        "name": "Notion API Token",
+        "provider": "Notion",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "notion_integration_token",
+        "name": "Notion Integration Token",
+        "provider": "Notion",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "notion_oauth_client_secret",
+        "name": "Notion OAuth Client Secret",
+        "provider": "Notion",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "npm_access_token",
+        "name": "npm Access Token",
+        "provider": "npm",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "nuget_api_key",
+        "name": "NuGet API Key",
+        "provider": "NuGet",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "octopus_deploy_api_key",
+        "name": "Octopus Deploy API Key",
+        "provider": "Octopus Deploy",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "oculus_access_token",
+        "name": "Oculus Access Token",
+        "provider": "Oculus",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "onechronos_api_key",
+        "name": "OneChronos API Token",
+        "provider": "OneChronos",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "onechronos_eb_api_key",
+        "name": "OneChronos Expressive Bidding API Key",
+        "provider": "OneChronos",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "onechronos_eb_encryption_key",
+        "name": "OneChronos Expressive Bidding Encryption Key",
+        "provider": "OneChronos",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "onechronos_oauth_token",
+        "name": "OneChronos OAuth Token",
+        "provider": "OneChronos",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "onechronos_refresh_token",
+        "name": "OneChronos Refresh Token",
+        "provider": "OneChronos",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "onesignal_rich_authentication_token",
+        "name": "OneSignal Rich API Key",
+        "provider": "OneSignal",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "onfido_live_api_token",
+        "name": "Onfido Live API Token",
+        "provider": "Onfido",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "onfido_sandbox_api_token",
+        "name": "Onfido Sandbox API Token",
+        "provider": "Onfido",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "openai_api_key",
+        "name": "OpenAI API Key",
+        "provider": "OpenAI",
+        "regex": "(?<![A-Za-z0-9_-])(sk-(?:proj|svcacct|admin)-[A-Za-z0-9_-]{40,160}|sk-[A-Za-z0-9]{48}|sk-[A-Za-z0-9]{20}T3BlbkFJ[A-Za-z0-9]{20})(?![A-Za-z0-9_-])",
+        "severity": "HIGH",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "openrouter_api_key",
+        "name": "OpenRouter API Key",
+        "provider": "OpenRouter",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "openvsx_access_token",
+        "name": "OpenVSX Access Token",
+        "provider": "OpenVSX",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "openweather_api_key",
+        "name": "Openweather API Key",
+        "provider": "Openweather",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "oracle_api_key",
+        "name": "Oracle API Key",
+        "provider": "Oracle",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "orbit_api_token",
+        "name": "Orbit API Token",
+        "provider": "Orbit",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "paddle_api_key",
+        "name": "Paddle API Key",
+        "provider": "Paddle",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "paddle_sandbox_api_key",
+        "name": "Paddle Sandbox API Key",
+        "provider": "Paddle",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "pagerduty_oauth_secret",
+        "name": "PagerDuty OAuth Secret",
+        "provider": "PagerDuty",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "pagerduty_oauth_token",
+        "name": "PagerDuty OAuth Token",
+        "provider": "PagerDuty",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "palantir_jwt",
+        "name": "Palantir JSON Web Token",
+        "provider": "Palantir",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "pangea_token",
+        "name": "Pangea Token",
+        "provider": "Pangea",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "perplexity_api_key",
+        "name": "Perplexity API Key",
+        "provider": "Perplexity",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "persona_production_api_key",
+        "name": "Persona Production Api Key",
+        "provider": "Persona  Identities",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "persona_sandbox_api_key",
+        "name": "Persona Sandbox Api Key",
+        "provider": "Persona  Identities",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "pineapple_technologies_incident_api_key",
+        "name": "Pineapple Technologies Incident API Key",
+        "provider": "Pineapple Technologies Limited",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "pinecone_api_key",
+        "name": "Pinecone API Key",
+        "provider": "Pinecone",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "pinterest_access_token",
+        "name": "Pinterest Access Token",
+        "provider": "Pinterest",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "pinterest_refresh_token",
+        "name": "Pinterest Refresh Token",
+        "provider": "Pinterest",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "planetscale_database_password",
+        "name": "PlanetScale Database Password",
+        "provider": "PlanetScale",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "planetscale_oauth_token",
+        "name": "PlanetScale OAuth Token",
+        "provider": "PlanetScale",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "planetscale_service_token",
+        "name": "PlanetScale Service Token",
+        "provider": "PlanetScale",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "planning_center_oauth_access_token",
+        "name": "Planning Center OAuth Access Token",
+        "provider": "Planning Center",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "planning_center_oauth_app_secret",
+        "name": "Planning Center OAuth Application Secret",
+        "provider": "Planning Center",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "planning_center_personal_access_token",
+        "name": "Planning Center Personal Access Token",
+        "provider": "Planning Center",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "plivo_auth_id",
+        "name": "Plivo Auth ID",
+        "provider": "Plivo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "polar_access_token",
+        "name": "Polar Access Token",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "polar_authorization_code",
+        "name": "Polar Authorization Code",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "polar_client_registration_token",
+        "name": "Polar Client Registration Token",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "polar_client_secret",
+        "name": "Polar Client Secret",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "polar_customer_session_token",
+        "name": "Polar Customer Session Token",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "polar_personal_access_token",
+        "name": "Polar Personal Access Token",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "polar_refresh_token",
+        "name": "Polar Refresh Token",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "polar_user_session_token",
+        "name": "Polar User Session Token",
+        "provider": "Polar",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "posthog_feature_flags_secure_api_key",
+        "name": "PostHog Feature Flags Secure API Key",
+        "provider": "PostHog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "posthog_oauth_access_token",
+        "name": "PostHog OAuth Access Token",
+        "provider": "PostHog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "posthog_oauth_refresh_token",
+        "name": "PostHog OAuth Refresh Token",
+        "provider": "PostHog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "posthog_personal_api_key",
+        "name": "PostHog Personal API Key",
+        "provider": "PostHog",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "postman_api_key",
+        "name": "Postman API Key",
+        "provider": "Postman",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "postman_collection_key",
+        "name": "Postman Collection Key",
+        "provider": "Postman",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "prefect_server_api_key",
+        "name": "Prefect Server API Key",
+        "provider": "Prefect",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "prefect_user_api_key",
+        "name": "Prefect User API Key",
+        "provider": "Prefect",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "proctorio_consumer_key",
+        "name": "Proctorio Consumer Key",
+        "provider": "Proctorio",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "proctorio_linkage_key",
+        "name": "Proctorio Linkage Key",
+        "provider": "Proctorio",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "proctorio_registration_key",
+        "name": "Proctorio Registration Key",
+        "provider": "Proctorio",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "proctorio_secret_key",
+        "name": "Proctorio Secret Key",
+        "provider": "Proctorio",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "proof_full_access_api_key",
+        "name": "Proof Full Access API Key",
+        "provider": "Proof",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "pulumi_access_token",
+        "name": "Pulumi Access Token",
+        "provider": "Pulumi",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "pypi_api_token",
+        "name": "PyPI API Token",
+        "provider": "PyPI",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "rainforest_api_key",
+        "name": "Rainforest API Key",
+        "provider": "Rainforest Pay",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "rainforest_sandbox_api_key",
+        "name": "Rainforest Sandbox API Key",
+        "provider": "Rainforest Pay",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "ramp_client_id",
+        "name": "Ramp OAuth Client ID",
+        "provider": "Ramp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "ramp_client_secret",
+        "name": "Ramp OAuth Client Secret",
+        "provider": "Ramp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "ramp_oauth_token",
+        "name": "Ramp OAuth Access or Refresh Token",
+        "provider": "Ramp",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "raycast_access_token",
+        "name": "Raycast Access Token",
+        "provider": "Raycast",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "readmeio_api_access_token",
+        "name": "ReadMe API Key",
+        "provider": "ReadMe",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "redirect_pizza_api_token",
+        "name": "redirect.pizza API Token",
+        "provider": "redirect.pizza",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "replicate_api_token",
+        "name": "Replicate API Token",
+        "provider": "Replicate",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "rootly_api_key",
+        "name": "Rootly API Key",
+        "provider": "Rootly",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "rubygems_api_key",
+        "name": "RubyGems API Key",
+        "provider": "RubyGems",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "runpod_api_key",
+        "name": "RunPod API Key",
+        "provider": "RunPod",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "salesforce_access_token",
+        "name": "Salesforce Access Token",
+        "provider": "Salesforce",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "salesforce_marketing_cloud_api_oauth2_token",
+        "name": "Salesforce Marketing Cloud API OAuth2 Token",
+        "provider": "Salesforce",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "salesforce_oauth2_consumer_key",
+        "name": "Salesforce OAuth2 Consumer Key",
+        "provider": "Salesforce",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "salesforce_refresh_token",
+        "name": "Salesforce Refresh Token",
+        "provider": "Salesforce",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "samsara_api_token",
+        "name": "Samsara API Token",
+        "provider": "Samsara",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "samsara_oauth_access_token",
+        "name": "Samsara OAuth Access Token",
+        "provider": "Samsara",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "scalr_api_token",
+        "name": "Scalr API Token",
+        "provider": "Scalr",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "segment_public_api_token",
+        "name": "Segment Public API Token",
+        "provider": "Segment",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sendgrid_api_key",
+        "name": "SendGrid API Key",
+        "provider": "SendGrid",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sentry_integration_token",
+        "name": "Sentry Integration Token",
+        "provider": "Sentry",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "sentry_organization_token",
+        "name": "Sentry Organization Token",
+        "provider": "Sentry",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "sentry_personal_token",
+        "name": "Sentry Personal Token",
+        "provider": "Sentry",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sentry_user_app_auth_token",
+        "name": "Sentry User App Auth Token",
+        "provider": "Sentry",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shippo_live_api_token",
+        "name": "Shippo Live API Token",
+        "provider": "Shippo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shippo_test_api_token",
+        "name": "Shippo Test API Token",
+        "provider": "Shippo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shopee_open_platform_partner_key",
+        "name": "Shopee Open Platform Partner Key",
+        "provider": "Shopee",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shopify_access_token",
+        "name": "Shopify Access Token",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "shopify_app_client_credentials",
+        "name": "Shopify App Client Credentials",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shopify_app_client_secret",
+        "name": "Shopify App Client Secret",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shopify_app_shared_secret",
+        "name": "Shopify App Shared Secret",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shopify_custom_app_access_token",
+        "name": "Shopify Custom App Access Token",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "shopify_marketplace_token",
+        "name": "Shopify Marketplace Token",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shopify_merchant_token",
+        "name": "Shopify Merchant Token",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "shopify_partner_api_token",
+        "name": "Shopify Partner API Token",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "shopify_private_app_password",
+        "name": "Shopify Private App Password",
+        "provider": "Shopify",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "siemens_api_token",
+        "name": "Siemens API Token",
+        "provider": "Siemens",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "siemens_code_token",
+        "name": "Siemens Code Token",
+        "provider": "Siemens",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "sindri_api_key",
+        "name": "Sindri API Key",
+        "provider": "Sindri",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "slack_api_token",
+        "name": "Slack API Token",
+        "provider": "Slack",
+        "regex": "(?i)\\b(xox[baprs]-[0-9]{12}-[0-9]{12}-[a-zA-Z0-9]{24})\\b",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "slack_incoming_webhook_url",
+        "name": "Slack Incoming Webhook URL",
+        "provider": "Slack",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "slack_workflow_trigger_url",
+        "name": "Slack Workflow Trigger URL",
+        "provider": "Slack",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "slack_workflow_webhook_url",
+        "name": "Slack Workflow Webhook URL",
+        "provider": "Slack",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "snowflake_postgres_connection_string",
+        "name": "SFPG Connection String",
+        "provider": "Snowflake",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "snowflake_postgres_host",
+        "name": "SFPG Host",
+        "provider": "Snowflake",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "snowflake_programmatic_access_token",
+        "name": "Snowflake Programmatic Access Token",
+        "provider": "Snowflake",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "sourcegraph_access_token",
+        "name": "Sourcegraph Access Token",
+        "provider": "Sourcegraph",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sourcegraph_dotcom_user_gateway",
+        "name": "Sourcegraph Dotcom User Gateway Access Token",
+        "provider": "Sourcegraph",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "sourcegraph_instance_identifier_access_token",
+        "name": "Sourcegraph Access Token with Instance Identifier",
+        "provider": "Sourcegraph",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sourcegraph_license_key_token",
+        "name": "Sourcegraph License Key Token",
+        "provider": "Sourcegraph",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "sourcegraph_product_subscription_token",
+        "name": "Sourcegraph Product Subscription Token",
+        "provider": "Sourcegraph",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "square_access_token",
+        "name": "Square Access Token",
+        "provider": "Square",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "square_production_application_secret",
+        "name": "Square Production Application Secret",
+        "provider": "Square",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "square_sandbox_application_secret",
+        "name": "Square Sandbox Application Secret",
+        "provider": "Square",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "sslmate_api_key",
+        "name": "SSLMate API Key",
+        "provider": "SSLMate",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "sslmate_cluster_secret",
+        "name": "SSLMate Cluster Secret",
+        "provider": "SSLMate",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "stripe_api_key",
+        "name": "Stripe API Key",
+        "provider": "Stripe",
+        "regex": "(?i)\\b(sk_(?:live|test)_[0-9a-zA-Z]{24,34})\\b",
+        "severity": "HIGH",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "stripe_legacy_api_key",
+        "name": "Stripe Legacy API Key",
+        "provider": "Stripe",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "stripe_live_restricted_key",
+        "name": "Stripe Live API Restricted Key",
+        "provider": "Stripe",
+        "regex": "(?i)\\b(rk_live_[0-9a-zA-Z]{24,34})\\b",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "stripe_test_restricted_key",
+        "name": "Stripe Test API Restricted Key",
+        "provider": "Stripe",
+        "regex": "(?i)\\b(rk_test_[0-9a-zA-Z]{24,34})\\b",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "stripe_test_secret_key",
+        "name": "Stripe Test API Secret Key",
+        "provider": "Stripe",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "stripe_webhook_signing_secret",
+        "name": "Stripe Webhook Signing Secret",
+        "provider": "Stripe",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "supabase_personal_access_token",
+        "name": "Supabase Personal Access Token",
+        "provider": "Supabase",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "supabase_secret_key",
+        "name": "Supabase Secret Key",
+        "provider": "Supabase",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "supabase_service_key",
+        "name": "Supabase Service Key",
+        "provider": "Supabase",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "tableau_personal_access_token",
+        "name": "Tableau Personal Access Token",
+        "provider": "Tableau",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "tailscale_api_key",
+        "name": "Tailscale API Key",
+        "provider": "Tailscale",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "telegram_bot_token",
+        "name": "Telegram Bot Token",
+        "provider": "Telegram",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "telnyx_api_v2_key",
+        "name": "Telnyx API V2 Key",
+        "provider": "Telnyx",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "temporal_cloud_api_key",
+        "name": "Temporal Cloud API Key",
+        "provider": "Temporal",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "tencent_cloud_intl_access_token",
+        "name": "Tencent Cloud International Access Token",
+        "provider": "Tencent",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "tencent_cloud_secret_id",
+        "name": "Tencent Cloud Secret ID",
+        "provider": "Tencent",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "tencent_wechat_api_app_id",
+        "name": "Tencent WeChat API App ID",
+        "provider": "Tencent",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "tencent_wechat_pay_token",
+        "name": "Tencent WeChat Pay Token",
+        "provider": "Tencent",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "thunderstore_io_api_token",
+        "name": "Thunderstore IO API Token",
+        "provider": "Thunderstore",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "twilio_access_token",
+        "name": "Twilio Access Token",
+        "provider": "Twilio",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "twilio_account_sid",
+        "name": "Twilio Account String Identifier",
+        "provider": "Twilio",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "twilio_api_key",
+        "name": "Twilio API Key",
+        "provider": "Twilio",
+        "regex": "",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "typeform_personal_access_token",
+        "name": "Typeform Personal Access Token",
+        "provider": "Typeform",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "wiseflow_api_key",
+        "name": "WISEflow API Key",
+        "provider": "Uniwise",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "unkey_root_key",
+        "name": "Unkey Root Key",
+        "provider": "Unkey",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "val_town_api_token",
+        "name": "Val Town API Token",
+        "provider": "Val Town",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "vercel_api_key",
+        "name": "Vercel API Key",
+        "provider": "Vercel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "vercel_app_refresh_token",
+        "name": "Vercel App Refresh Token",
+        "provider": "Vercel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "vercel_app_user_access_token",
+        "name": "Vercel App User Access Token",
+        "provider": "Vercel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "vercel_integration_access_token",
+        "name": "Vercel Integration Access Token",
+        "provider": "Vercel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "vercel_personal_access_token",
+        "name": "Vercel Personal Access Token",
+        "provider": "Vercel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "vercel_support_access_token",
+        "name": "Vercel Support Access Token",
+        "provider": "Vercel",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "volcengine_access_key_id",
+        "name": "VolcEngine Access Key ID",
+        "provider": "VolcEngine",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "volcengine_ark_api_key",
+        "name": "VolcEngine Ark API Key",
+        "provider": "VolcEngine",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "wakatime_api_key",
+        "name": "WakaTime API Key",
+        "provider": "Wakatime",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "wakatime_app_secret",
+        "name": "WakaTime App Secret",
+        "provider": "Wakatime",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "wakatime_oauth_access_token",
+        "name": "WakaTime OAuth Access Token",
+        "provider": "Wakatime",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "wakatime_oauth_refresh_token",
+        "name": "WakaTime OAuth Refresh Token",
+        "provider": "Wakatime",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "weatherstack_api_key",
+        "name": "Weatherstack API Key",
+        "provider": "Weatherstack",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "wandb_api_key",
+        "name": "Weights & Biases API Key",
+        "provider": "Weights & Biases",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "workato_developer_api_token",
+        "name": "Workato Developer API Token",
+        "provider": "Workato",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "workos_production_api_key",
+        "name": "WorkOS Production API Key",
+        "provider": "WorkOS",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "workos_staging_api_key",
+        "name": "WorkOS Staging API Key",
+        "provider": "WorkOS",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "wso2_choreo_personal_access_token",
+        "name": "WSO2 Choreo Personal Access Token",
+        "provider": "WSO2",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "xai_api_key",
+        "name": "xAI API Key",
+        "provider": "xAI",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "yandex_cloud_api_key",
+        "name": "Yandex.Cloud API Key",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "yandex_cloud_iam_access_secret",
+        "name": "Yandex.Cloud Access Secret",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "yandex_cloud_iam_cookie",
+        "name": "Yandex.Cloud IAM Cookie",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "yandex_cloud_iam_token",
+        "name": "Yandex.Cloud IAM Token",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "yandex_cloud_smartcaptcha_server_key",
+        "name": "Yandex.Cloud Smartchapta Server Key",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "yandex_dictionary_api_key",
+        "name": "Yandex.Dictionary API Key",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "yandex_passport_oauth_token",
+        "name": "Yandex.Passport OAuth Token",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "yandex_predictor_api_key",
+        "name": "Yandex.Predictor API Key",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "yandex_translate_api_key",
+        "name": "Yandex.Translate API Key",
+        "provider": "Yandex",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "zenhub_personal_api_key",
+        "name": "ZenHub Personal API Key",
+        "provider": "ZenHub",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "zuplo_consumer_api_key",
+        "name": "Zuplo Consumer API Key",
+        "provider": "Zuplo",
+        "regex": "",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mapbox_api_key",
+        "name": "Mapbox API Key",
+        "provider": "Mapbox",
+        "regex": "(?i)\\b((?:pk|sk|tk)\\.eyJ[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+)\\b",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "opencage_api_key",
+        "name": "OpenCage API Key",
+        "provider": "OpenCage",
+        "regex": "(?i)(?:opencage|geocode)[\\w\\s]*?[\\s:=]+['\\\"]?([a-f0-9]{32})['\\\"]?",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "mapquest_api_key",
+        "name": "MapQuest API Key",
+        "provider": "MapQuest",
+        "regex": "(?i)(?:mapquest)[\\w\\s]*?[\\s:=]+['\\\"]?([a-zA-Z0-9_-]{32})['\\\"]?",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "bing_maps_api_key",
+        "name": "Bing Maps API Key",
+        "provider": "Microsoft",
+        "regex": "(?i)(?:bing|bingmaps|virtualearth)[\\w\\s]*?[\\s:=]+['\\\"]?([a-zA-Z0-9_-]{64})['\\\"]?",
+        "severity": "MEDIUM",
+        "hasValidityCheck": true
+    },
+    {
+        "id": "generic_api_key",
+        "name": "Generic API Key",
+        "provider": "Generic",
+        "regex": "(?i)(api[_-]?key|secret[_-]?key|access[_-]?token)[\\s:=]+['\\\"]?([a-zA-Z0-9\\-]{32,})['\\\"]?",
+        "severity": "MEDIUM",
+        "hasValidityCheck": false
+    },
+    {
+        "id": "rsa_private_key",
+        "name": "RSA Private Key",
+        "provider": "Generic",
+        "regex": "-----BEGIN RSA PRIVATE KEY-----",
+        "severity": "HIGH",
+        "hasValidityCheck": false
+    }
+]
